@@ -1,0 +1,98 @@
+PODS:
+  - Alamofire (4.7.2)
+  - AlamofireImage (3.3.1):
+    - Alamofire (~> 4.5)
+  - CarbonKit (2.2.2)
+  - Cosmos (16.0.0)
+  - Firebase/CoreOnly (5.0.1):
+    - FirebaseCore (= 5.0.1)
+  - Firebase/Messaging (5.0.1):
+    - Firebase/CoreOnly
+    - FirebaseMessaging (= 3.0.0)
+  - FirebaseCore (5.0.1):
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+  - FirebaseInstanceID (3.0.0):
+    - FirebaseCore (~> 5.0)
+  - FirebaseMessaging (3.0.0):
+    - FirebaseCore (~> 5.0)
+    - FirebaseInstanceID (~> 3.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - Protobuf (~> 3.1)
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
+    - GoogleMaps/Base
+  - GoogleToolboxForMac/Defines (2.1.4)
+  - GoogleToolboxForMac/Logger (2.1.4):
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
+    - GoogleToolboxForMac/Defines (= 2.1.4)
+  - HCSStarRatingView (1.5)
+  - Kingfisher (4.8.0)
+  - Protobuf (3.5.0)
+  - SeamlessSlideUpScrollView (2.0.1)
+  - SVProgressHUD (2.2.5)
+  - SwiftyJSON (4.1.0)
+  - Tamamushi (0.1.3)
+  - XLPagerTabStrip (8.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.7)
+  - AlamofireImage (~> 3.3)
+  - CarbonKit
+  - Cosmos (~> 16.0)
+  - Firebase/Messaging
+  - GoogleMaps
+  - HCSStarRatingView (~> 1.5)
+  - Kingfisher (~> 4.0)
+  - SeamlessSlideUpScrollView
+  - SVProgressHUD
+  - SwiftyJSON (~> 4.0)
+  - Tamamushi
+  - XLPagerTabStrip (~> 8.0)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AlamofireImage
+    - CarbonKit
+    - Cosmos
+    - Firebase
+    - FirebaseCore
+    - FirebaseInstanceID
+    - FirebaseMessaging
+    - GoogleMaps
+    - GoogleToolboxForMac
+    - HCSStarRatingView
+    - Kingfisher
+    - Protobuf
+    - SeamlessSlideUpScrollView
+    - SVProgressHUD
+    - SwiftyJSON
+    - Tamamushi
+    - XLPagerTabStrip
+
+SPEC CHECKSUMS:
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AlamofireImage: 3b35b586853abaf94ca1250f4e94cff3c21a4c0d
+  CarbonKit: 0dec4738fa489b4c043a5f850c27fd0dbefb57cc
+  Cosmos: 7bcee0fa858a9355a214f2a181be5dffcee42c81
+  Firebase: d6861c2059d8c32d1e6dd8932e22ada346d90a3a
+  FirebaseCore: cafc814b2d84fc8733f09e653041cc2165332ad7
+  FirebaseInstanceID: 83e0040351565df711a5db3d8ebe5ea21aca998a
+  FirebaseMessaging: f2360a966ecfb0d14facf0fbdf306efc2df0ddbe
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
+  HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
+  Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
+  Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
+  SeamlessSlideUpScrollView: fe569043d844015107a58e0d8ea78b97bfa35d2d
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
+  Tamamushi: 4c07eb1e0f612f0bd9e67d7c5f0f3edd3a238680
+  XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
+
+PODFILE CHECKSUM: f23f2ab5d101d8a61d95304e09613a1ab1448fd7
+
+COCOAPODS: 1.5.2
