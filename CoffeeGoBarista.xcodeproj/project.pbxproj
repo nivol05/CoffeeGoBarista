@@ -11,7 +11,6 @@
 		EF14B3BB2138221300EE6854 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BA2138221300EE6854 /* SignInVC.swift */; };
 		EF14B3BD2138270B00EE6854 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BC2138270B00EE6854 /* Constant.swift */; };
 		EF14B3BF213828E400EE6854 /* staticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BE213828E400EE6854 /* staticData.swift */; };
-		EF14B3C12138461000EE6854 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF14B3C02138460F00EE6854 /* GoogleService-Info.plist */; };
 		EF388BC420E7A52900378DA4 /* OrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC320E7A52900378DA4 /* OrderVC.swift */; };
 		EF388BC620E7C5DB00378DA4 /* TimeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC520E7C5DA00378DA4 /* TimeVC.swift */; };
 		EF388BC820E92A3100378DA4 /* CashBoxVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC720E92A3100378DA4 /* CashBoxVC.swift */; };
@@ -28,6 +27,7 @@
 		EFA5EB83213DCC0C0020072D /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB82213DCC0C0020072D /* Order.swift */; };
 		EFA5EB85213E9B660020072D /* OrderItemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB84213E9B660020072D /* OrderItemsVC.swift */; };
 		EFA5EB87213EA6420020072D /* OrderItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB86213EA6420020072D /* OrderItems.swift */; };
+		EFABEDE0214ED9F20031EF1A /* TFWitoutCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,7 +37,6 @@
 		EF14B3BA2138221300EE6854 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		EF14B3BC2138270B00EE6854 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		EF14B3BE213828E400EE6854 /* staticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = staticData.swift; sourceTree = "<group>"; };
-		EF14B3C02138460F00EE6854 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../Downloads/Telegram Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EF388BC320E7A52900378DA4 /* OrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderVC.swift; sourceTree = "<group>"; };
 		EF388BC520E7C5DA00378DA4 /* TimeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeVC.swift; sourceTree = "<group>"; };
 		EF388BC720E92A3100378DA4 /* CashBoxVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashBoxVC.swift; sourceTree = "<group>"; };
@@ -56,6 +55,7 @@
 		EFA5EB82213DCC0C0020072D /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EFA5EB84213E9B660020072D /* OrderItemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemsVC.swift; sourceTree = "<group>"; };
 		EFA5EB86213EA6420020072D /* OrderItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItems.swift; sourceTree = "<group>"; };
+		EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFWitoutCursor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,7 +116,6 @@
 				EF468C0320E53B44009178B3 /* Assets.xcassets */,
 				EF468C0520E53B44009178B3 /* LaunchScreen.storyboard */,
 				EF468C0820E53B44009178B3 /* Info.plist */,
-				EF14B3C02138460F00EE6854 /* GoogleService-Info.plist */,
 			);
 			path = CoffeeGoBarista;
 			sourceTree = "<group>";
@@ -140,6 +139,7 @@
 				EF14B3BC2138270B00EE6854 /* Constant.swift */,
 				EF14B3BE213828E400EE6854 /* staticData.swift */,
 				EFA5EB82213DCC0C0020072D /* Order.swift */,
+				EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -220,7 +220,6 @@
 			files = (
 				EF468C0720E53B44009178B3 /* LaunchScreen.storyboard in Resources */,
 				EF388BD220EA6C8F00378DA4 /* Cell.xib in Resources */,
-				EF14B3C12138461000EE6854 /* GoogleService-Info.plist in Resources */,
 				EF468C0420E53B44009178B3 /* Assets.xcassets in Resources */,
 				EF468C0220E53B41009178B3 /* Main.storyboard in Resources */,
 			);
@@ -317,6 +316,7 @@
 				EF468C1820E77EEB009178B3 /* OrdersList.swift in Sources */,
 				EFA5EB7F213ADA170020072D /* OrderCell.swift in Sources */,
 				EF388BC620E7C5DB00378DA4 /* TimeVC.swift in Sources */,
+				EFABEDE0214ED9F20031EF1A /* TFWitoutCursor.swift in Sources */,
 				EF14B3BD2138270B00EE6854 /* Constant.swift in Sources */,
 				EFA5EB85213E9B660020072D /* OrderItemsVC.swift in Sources */,
 				EF14B3BB2138221300EE6854 /* SignInVC.swift in Sources */,
@@ -476,6 +476,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7JSG597976;
 				INFOPLIST_FILE = CoffeeGoBarista/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -495,6 +496,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7JSG597976;
 				INFOPLIST_FILE = CoffeeGoBarista/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

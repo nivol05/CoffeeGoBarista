@@ -14,6 +14,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
 
     @IBOutlet weak var collection: UICollectionView!
     
+    static var isChangingStatus : Bool!
     var orders : [[String: Any]] = [[String: Any]]()
     
     var time = 0
@@ -32,14 +33,16 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        OrderVC.isChangingStatus = true
         timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(OrderVC.sayHello), userInfo: nil, repeats: true)
-        getOrders()
-        
-        
-        
+        self.collection.dataSource = self
+        self.collection.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        collection.reloadData()
+        if OrderVC.isChangingStatus{
+            getOrders()
+        }
+        
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return orders.count
@@ -52,9 +55,9 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         
         
         let price = "\(order["full_price"]!)"
-        cell.LblPrice.text = "\(price) grn"
-        cell.LblTime.text = "\(order["order_time"]!)"
-        cell.orderIndex.text = "Заказ \(indexPath.row + 1)"
+        cell.LblPrice.text = "Сумма: \(price) грн"
+        cell.LblTime.text = "Время: \(order["order_time"]!)"
+        cell.orderIndex.text = "\(indexPath.row + 1)"
         cell.buttonBG.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
         cell.buttonBG.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
 
@@ -70,7 +73,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
             minsToOrder += 1440
         }
         
-        cell.orderlbl.text = "Через \(minsToOrder) минут"
+        cell.orderlbl.text = "Через \(minsToOrder) мин"
         
         cell.buttonBG.tag = indexPath.row
         return cell
@@ -80,28 +83,6 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         let cell = Storyboard.instantiateViewController(withIdentifier: "OrderItemsPage") as! OrderItemsVC
         cell.Id = self.orders[indexPath.row]["id"] as! Int
         self.navigationController?.pushViewController(cell, animated: true)
-    }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let screenWidth = UIScreen.main.bounds.size.width
-        //        var screenSize = screenWidth
-        
-        var width = screenWidth - (2 * 12)
-        print(screenWidth)
-        if screenWidth >= 750 {
-            width = screenWidth / 3.3
-            //            widthConstraint.constant = screenWidth - 30
-        }
-        if screenWidth <= 750 && screenWidth > 667{
-            width = screenWidth / 3.3
-        }
-        if screenWidth == 667{
-            width = screenWidth / 2.2
-        }
-        if screenWidth == 568{
-            width = screenWidth / 2.2
-        }
-        return CGSize(width: CGFloat((width)), height: CGFloat((170)))
     }
     
     @objc func sayHello()
@@ -120,13 +101,63 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
             
             if response.result.isSuccess {
-                self.orders = response.result.value as! [[String : Any]]
-                self.collection.dataSource = self
-                self.collection.delegate = self
+                self.sortByTime(orders : response.result.value as! [[String : Any]])
+                
+                if OrderVC.isChangingStatus{
+                    self.collection.reloadData()
+                    OrderVC.isChangingStatus = false
+                }
             } else {
                 print("Hui")
             }
         }
+    }
+    
+    func sortByTime(orders : [[String: Any]]){
+        
+        var sortedOrders : [[String: Any]] = [[String: Any]]()
+        if orders.count == 0{
+            self.orders = sortedOrders
+            return
+        }
+        sortedOrders.append(orders[0])
+        
+        let date = NSDate()
+        let calendar = NSCalendar.current
+        
+        let currMin = calendar.component(.hour, from: date as Date) * 60 + calendar.component(.minute, from: date as Date)
+        
+        for i in 1..<orders.count{
+            let order = orders[i]
+            var zl = true
+            for j in 0..<sortedOrders.count{
+                var mins = toMins(s: sortedOrders[j]["order_time"] as! String) - currMin
+                var observMins = toMins(s: order["order_time"] as! String) - currMin
+                
+                if observMins < 0{
+                    observMins = observMins + 1440
+                }
+                
+                if mins < 0{
+                    mins = mins + 1440
+                }
+                
+                if observMins <= mins{
+                    sortedOrders.insert(order, at: j)
+                    zl = false
+                    break;
+                }
+            }
+            if zl{
+                sortedOrders.append(order)
+            }
+            
+            
+            
+        }
+        
+        self.orders = sortedOrders
+        
     }
     
     func btnStatusClick(index : Int , sender:UIButton){
@@ -142,7 +173,9 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
             order["status"] = 7
             putNewOrder(order: order, status: status, sender: sender)
         } else if status == 7{
-//            startQuestion();
+            order["status"] = 3
+            putNewOrder(order: order, status: status, sender: sender)
+            
         }
     
     }
@@ -157,11 +190,17 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         Alamofire.request(isUser, method: .put , parameters: order, encoding: URLEncoding(), headers : params).responseJSON { (response) in
             
             if response.result.isSuccess {
+                
                 sender.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
                 self.orders[sender.tag] = order
+                if status == 7{
+                    self.orders.remove(at: sender.tag)
+                    self.collection.reloadData()
+                }
             } else {
                 print("Hui")
             }
+            
         }
     }
     

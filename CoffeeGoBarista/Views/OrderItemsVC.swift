@@ -213,20 +213,26 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
         let status = Order["status"] as! Int
         if status == 1{
             Order["status"] = 2
-            putNewOrder(order: Order)
+            putNewOrder(order: Order, status: status)
+           
         } else if status == 2{
             Order["status"] = 5
-            putNewOrder(order: Order)
+            putNewOrder(order: Order, status: status)
+          
         }else if status == 5{
             Order["status"] = 7
-            putNewOrder(order: Order)
+            putNewOrder(order: Order, status: status)
+         
         } else if status == 7{
-            //            startQuestion();
+            Order["status"] = 3
+            putNewOrder(order: Order, status: status)
+         
+            
         }
         
     }
     
-    func putNewOrder(order : [String: Any]){
+    func putNewOrder(order : [String: Any],status : Int){
         let isUser = "\(BASE_URL)\(Orders)\(order["id"]!)/"
         print(isUser)
         let params : HTTPHeaders = [
@@ -237,8 +243,11 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
             
             if response.result.isSuccess {
                 self.statusBtn.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
-
+                OrderVC.isChangingStatus = true
                 self.order = order
+                if status == 7{
+                    self.dismiss(animated: true, completion: nil)
+                }
             } else {
                 print("Hui")
             }
