@@ -15,7 +15,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     @IBOutlet weak var collection: UICollectionView!
     
     static var isChangingStatus : Bool!
-    var orders : [[String: Any]] = [[String: Any]]()
+    var orders : [ElementOrder]!
     
     var time = 0
     
@@ -23,28 +23,39 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     
     let statuses = [
         "",
-        "Підтвердити",
-        "Виконую",
-        "Виконано",
-        "Відхилено клієнтом",
-        "Завершити приготування",
-        "Відхилено закладом",
-        "Завершити замовлення"]
+        "Подтвердить",
+        "Готовлю",
+        "Завершено",
+        "Отклонено клиентом",
+        "Завершить приготовление",
+        "Отклонено заведением",
+        "Завершить заказ"]
+    
+    let statusColors = [
+        nil,
+        UIColor.yellow,
+        UIColor.yellow,
+        UIColor.green,
+        UIColor.red,
+        UIColor.yellow,
+        UIColor.red,
+        UIColor.green]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         OrderVC.isChangingStatus = true
-        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(OrderVC.sayHello), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(OrderVC.sayHello), userInfo: nil, repeats: true)
         self.collection.dataSource = self
         self.collection.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        if OrderVC.isChangingStatus{
-            getOrders()
-        }
-        
+        getOrders()
     }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if orders == nil{
+            return 0
+        }
         return orders.count
     }
     
@@ -52,25 +63,17 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         let cell = collection.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! Cell
         let order = orders[indexPath.row]
         
-        
-        
-        let price = "\(order["full_price"]!)"
-        cell.LblPrice.text = "Сумма: \(price) грн"
-        cell.LblTime.text = "Время: \(order["order_time"]!)"
+        cell.LblPrice.text = "Сумма: \(order.full_price!) грн"
+        cell.LblTime.text = "Время: \(order.order_time!)"
         cell.orderIndex.text = "\(indexPath.row + 1)"
-        cell.buttonBG.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
         cell.buttonBG.addTarget(self, action: #selector(cellOpened(sender:)), for: .touchUpInside)
-
-        let date = NSDate()
-        let calendar = NSCalendar.current
-        
-        let currMin = calendar.component(.hour, from: date as Date) * 60 + calendar.component(.minute, from: date as Date)
        
-        let mins = toMins(s: order["order_time"] as! String)
+        self.setStatusView(btn: cell.buttonBG, status: order.status)
+        let mins = toMins(time: order.order_time)
         
-        var minsToOrder = mins - currMin
-        if minsToOrder < 0{
-            minsToOrder += 1440
+        var minsToOrder = mins - toMins(time: getTimeNow())
+        if minsToOrder < 0 {
+            minsToOrder += 1440 // 1440 mins in 24 hrs
         }
         
         cell.orderlbl.text = "Через \(minsToOrder) мин"
@@ -78,10 +81,11 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         cell.buttonBG.tag = indexPath.row
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let Storyboard = UIStoryboard(name: "Main", bundle: nil)
         let cell = Storyboard.instantiateViewController(withIdentifier: "OrderItemsPage") as! OrderItemsVC
-        cell.Id = self.orders[indexPath.row]["id"] as! Int
+        cell.Id = self.orders[indexPath.row].id
         self.navigationController?.pushViewController(cell, animated: true)
     }
     
@@ -92,47 +96,40 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     }
     
     func getOrders(){
-        let isUser = "\(BASE_URL)\(List1_Order)\(staticData.spotId)"
-        print(isUser)
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
         
-        Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                self.sortByTime(orders : response.result.value as! [[String : Any]])
-                
-                if OrderVC.isChangingStatus{
-                    self.collection.reloadData()
-                    OrderVC.isChangingStatus = false
-                }
-            } else {
-                print("Hui")
+        getOrdersListOne().responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.sortByTime(orders : setElementOrderList(list: value as! [[String : Any]]))
+                self.collection.reloadData()
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }
     
-    func sortByTime(orders : [[String: Any]]){
+    func sortByTime(orders : [ElementOrder]){
         
-        var sortedOrders : [[String: Any]] = [[String: Any]]()
+        var sortedOrders = [ElementOrder]()
         if orders.count == 0{
             self.orders = sortedOrders
             return
         }
         sortedOrders.append(orders[0])
         
-        let date = NSDate()
-        let calendar = NSCalendar.current
-        
-        let currMin = calendar.component(.hour, from: date as Date) * 60 + calendar.component(.minute, from: date as Date)
+        let currMin = toMins(time: getTimeNow())
         
         for i in 1..<orders.count{
             let order = orders[i]
-            var zl = true
+            var higherMins = true
             for j in 0..<sortedOrders.count{
-                var mins = toMins(s: sortedOrders[j]["order_time"] as! String) - currMin
-                var observMins = toMins(s: order["order_time"] as! String) - currMin
+                var mins = toMins(time: sortedOrders[j].order_time) - currMin
+                var observMins = toMins(time: order.order_time) - currMin
                 
                 if observMins < 0{
                     observMins = observMins + 1440
@@ -144,71 +141,77 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
                 
                 if observMins <= mins{
                     sortedOrders.insert(order, at: j)
-                    zl = false
+                    higherMins = false
                     break;
                 }
             }
-            if zl{
+            if higherMins{
                 sortedOrders.append(order)
             }
-            
-            
-            
         }
-        
         self.orders = sortedOrders
-        
     }
     
     func btnStatusClick(index : Int , sender:UIButton){
-        var order = orders[index]
-        let status = order["status"] as! Int
-        if status == 1{
-            order["status"] = 2
-            putNewOrder(order: order, status: status, sender: sender)
-        } else if status == 2{
-            order["status"] = 5
-            putNewOrder(order: order, status: status, sender: sender)
-        }else if status == 5{
-            order["status"] = 7
-            putNewOrder(order: order, status: status, sender: sender)
-        } else if status == 7{
-            order["status"] = 3
-            putNewOrder(order: order, status: status, sender: sender)
-            
+        let order = orders[index]
+        if order.status == 1{
+            checkOrder(order: order, status: 2, sender: sender)
+        } else if order.status == 2{
+            checkOrder(order: order, status: 5, sender: sender)
+        }else if order.status == 5{
+            checkOrder(order: order, status: 7, sender: sender)
+        } else if order.status == 7{
+            checkOrder(order: order, status: 3, sender: sender)
         }
-    
     }
     
-    func putNewOrder(order : [String: Any], status : Int , sender:UIButton){
-        let isUser = "\(BASE_URL)\(Orders)\(order["id"]!)/"
-        print(isUser)
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(isUser, method: .put , parameters: order, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                
-                sender.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
-                self.orders[sender.tag] = order
-                if status == 7{
+    func checkOrder(order : ElementOrder, status : Int , sender:UIButton){
+        getOrderById(orderId: order.id).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                let orderResponse = ElementOrder(mas: value as! [String : Any])
+                if orderResponse.status != 4{
+                    order.status = status
+                    self.putNewOrder(order: order, status: status, sender: sender)
+                } else {
+                    //                    self.view.makeToast("Заказ уже был отменен пользователем")
                     self.orders.remove(at: sender.tag)
                     self.collection.reloadData()
                 }
-            } else {
-                print("Hui")
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
-            
         }
     }
     
-    func toMins(s : String) -> Int{
-        var hourMin = s.components(separatedBy: " : ")
-        let hour = Int(hourMin[0])
-        let mins = Int(hourMin[1])
-        return hour! * 60 + mins!
+    func putNewOrder(order : ElementOrder, status : Int , sender:UIButton){
+        patchOrder(order: order).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.setStatusView(btn: sender, status: order.status)
+                self.orders[sender.tag] = order
+                if order.status == 3{
+                    self.orders.remove(at: sender.tag)
+                    self.collection.reloadData()
+                }
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
+            }
+        }
+    }
+    
+    func setStatusView(btn: UIButton, status: Int){
+        btn.setTitle("\(self.statuses[status])", for: UIControl.State())
+        btn.layer.backgroundColor = self.statusColors[status]?.cgColor
     }
     
     @objc func cellOpened(sender:UIButton) {

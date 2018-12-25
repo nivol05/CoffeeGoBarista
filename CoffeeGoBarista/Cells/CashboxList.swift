@@ -22,18 +22,15 @@ class CashboxList: UICollectionViewCell {
     @IBOutlet weak var LblTime: UILabel!
     @IBOutlet weak var LblOrderRow: UILabel!
     @IBOutlet weak var LblPrice: UILabel!
-    func ConerRatio(){
-        
-
+    
+    override func awakeFromNib() {
         orderIndex.layer.cornerRadius = 41 / 2
         orderIndex.layer.masksToBounds = true
-        BGOrderIndex.layer.cornerRadius = 42.5 / 2
+        BGOrderIndex.layer.cornerRadius = 35 / 2
         BG.layer.cornerRadius = 5
         BG1.layer.cornerRadius = 15
         BG2.layer.cornerRadius = 15
         BG3.layer.cornerRadius = 15
         BtnStatus.layer.cornerRadius = 15
-
-        
     }
 }

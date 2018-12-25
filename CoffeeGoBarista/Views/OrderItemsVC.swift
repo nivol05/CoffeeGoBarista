@@ -21,14 +21,11 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
 
     var time = 0
     var timer = Timer()
-    let date = NSDate()
-    let calendar = NSCalendar.current
-    let currMin = NSCalendar.current.component(.hour, from: NSDate() as Date) * 60 + NSCalendar.current.component(.minute, from: NSDate() as Date)
     
     var Id : Int!
     
-    var orderItems : [[String: Any]] = [[String: Any]]()
-    var order : [String : Any] = [String : Any]()
+    var orderItems : [ElementOrderItem]!
+    var order : ElementOrder!
     
     let statuses = [
         "",
@@ -45,7 +42,8 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
         statusBtn.layer.cornerRadius = 5
         CommentLbl.layer.cornerRadius = 5
         
-//        timer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(OrderItemsVC.Time), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 30, target: self, selector: #selector(OrderItemsVC.Time), userInfo: nil, repeats: true)
+        
         textField(TF: TFPrice)
         textField(TF: TFTime)
         textField(TF: CurrTime)
@@ -62,55 +60,64 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if orderItems == nil{
+            return 0
+        }
         return orderItems.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderItems", for: indexPath) as? OrderItems
         
-        let ordersElements = orderItems[indexPath.row]
-        var avatar_url: URL
-        let product_id = ordersElements["product"] as! Int
-        var element : [String : Any] = [String: Any]()
-        for i in staticData.menu{
-            if product_id == i["id"] as! Int{
+        let orderItem = orderItems[indexPath.row]
+        let product_id = orderItem.product
+        var element : ElementProduct!
+        for i in menu{
+            if product_id == i.id{
                 element = i
                 break
             }
         }
         
-        avatar_url = URL(string: element["img"] as! String)!
-        cell?.ImgCoffee.kf.setImage(with: avatar_url)
+        //CoffeeImag
+        if element.img != nil{
+            cell?.ImgCoffee.kf.setImage(with: URL(string: element.img)!)
+        } else{
+            cell?.ImgCoffee.image = #imageLiteral(resourceName: "coffee-cup")
+        }
         
-        cell?.LblName.text = element["name"] as? String
+        cell?.LblName.text = element.name
         
         
         var coffee_price = ""
-        switch "\(ordersElements["cup_size"]!)"{
+        switch "\(orderItem.cup_size!)"{
             
         case "l":
-            coffee_price += "\(element["l_cup"]!)"
+            coffee_price += "\(element.l_cup!)"
             break
         case "m":
-            coffee_price +=  "\(element["m_cup"]!)"
+            coffee_price +=  "\(element.m_cup!)"
             break
         case "b":
-            coffee_price += "\(element["b_cup"]!)"
+            coffee_price += "\(element.b_cup!)"
             break
         default:
-            coffee_price += "\(element["price"]!)"
+            coffee_price += "\(element.price!)"
         }
-        coffee_price += " grn"
+        coffee_price += " грн"
         cell?.LblPrice.text = coffee_price
+        //            " " + context.getString(R.string.grn)
         
-        let sugar = ordersElements["sugar"] as? Double
-        let syrup = "\(ordersElements["syrups"]!)"
-        let species = "\(ordersElements["species"]!)"
-        let additions = ("\(ordersElements["additionals"]!)")
+        let sugar = orderItem.sugar
+        let syrup = "\(orderItem.syrups!)"
+        let species = "\(orderItem.species!)"
+        let additions = ("\(orderItem.additionals!)")
         
+        
+        //        cell?.LbllAdditions.text = ("\(ordersElements["additionals"]!)")
         
         if additions != "" && additions != "<null>" {
-            cell?.LbllAdditions.text = "Додатки: \(additions)"
+            cell?.LbllAdditions.text = "Добавки: \(additions)"
         } else {
             cell?.LbllAdditions.text = ""
         }
@@ -125,131 +132,138 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource 
         } else {
             cell?.LblSpice.text = ""
         }
+        //        cell?.LblSugar.text = "Сахар: \(sugar!)"
         
         if syrup != ""{
-            cell?.LblSyrup.text = "Сиропи: \(syrup)"
+            cell?.LblSyrup.text = "Сиропы: \(syrup)"
         } else {
             cell?.LblSyrup.text = ""
         }
         
-        cell?.LblUltPrice.text = "Всего: \(ordersElements["item_price"]!)грн"
+        cell?.LblUltPrice.text = "Всего: \((orderItem.item_price + orderItem.additionals_price)) грн"
         
         return cell!
     }
     
     func getOrder(){
-        let isUser = "\(BASE_URL)\(Orders)\(Id!)/"
-        print(isUser)
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
         
-        Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            self.order = response.result.value as! [String : Any]
-            self.statusBtn.setTitle("\(self.statuses[self.order["status"] as! Int])", for: UIControlState())
-            self.TFPrice.text = "\(self.order["full_price"]!) грн"
-            //                self.CurrTime.text = self.order["date"] as? String
-            self.TFTime.text = self.order["order_time"] as? String
-            
-            
-            
-            
-            let mins = self.toMins(s: self.order["order_time"] as! String)
-            
-            var minsToOrder = mins - self.currMin
-            if minsToOrder < 0{
-                minsToOrder += 1440
+        getOrderById(orderId: Id).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.order = ElementOrder(mas: value as! [String : Any])
+                self.TFPrice.text = "\(self.order.full_price!) грн"
+                self.TFTime.text = self.order.order_time
+                
+                
+                let currMins = toMins(time: getTimeNow())
+                let mins = toMins(time: self.order.order_time)
+                
+                var minsToOrder = mins - currMins
+                if minsToOrder < 0{
+                    minsToOrder += 1440
+                }
+                
+                self.CurrTime.text = "Через \(minsToOrder) минут"
+                
+                self.getOrderItems()
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
-            
-            self.CurrTime.text = "Через \(minsToOrder) минут"
-            
-            self.getOrdersItem()
         }
-    }
-    
-    func toMins(s : String) -> Int{
-        var hourMin = s.components(separatedBy: " : ")
-        let hour = Int(hourMin[0])
-        let mins = Int(hourMin[1])
-        return hour! * 60 + mins!
     }
 
     
-    func getOrdersItem(){
-        let isUser = "\(BASE_URL)\(Order_Items)\(Id!)"
-        print(isUser)
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            self.orderItems = response.result.value as! [[String : Any]]
-            self.tableView.delegate = self
-            self.tableView.dataSource = self
-            self.tableView.reloadData()
-            
+    func getOrderItems(){
+        getOrderItemsToOrder(orderId: Id).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.orderItems = setElementOrderItemList(list: value as! [[String : Any]])
+                self.tableView.delegate = self
+                self.tableView.dataSource = self
+                self.tableView.reloadData()
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
+            }
         }
     }
     @IBAction func statusBtn(_ sender: Any) {
         btnStatusClick()
     }
     
-//    @objc func Time()
-//    {
-//        let mins = self.toMins(s: self.order["order_time"] as! String)
-//        print("Tyt2")
-//        var minsToOrder = mins - self.currMin
-//        if minsToOrder < 0{
-//            minsToOrder += 1440
-//        }
-//
-//        self.CurrTime.text = "Через \(minsToOrder) минут"
-//    }
+    @objc func Time()
+    {
+        let currMins = toMins(time: getTimeNow())
+        let mins = toMins(time: self.order.order_time)
+        
+        var minsToOrder = mins - currMins
+        if minsToOrder < 0{
+            minsToOrder += 1440
+        }
+        self.CurrTime.text = "Через \(minsToOrder) минут"
+    }
     
     func btnStatusClick(){
-        var Order = order
-        let status = Order["status"] as! Int
-        if status == 1{
-            Order["status"] = 2
-            putNewOrder(order: Order, status: status)
-           
-        } else if status == 2{
-            Order["status"] = 5
-            putNewOrder(order: Order, status: status)
-          
-        }else if status == 5{
-            Order["status"] = 7
-            putNewOrder(order: Order, status: status)
-         
-        } else if status == 7{
-            Order["status"] = 3
-            putNewOrder(order: Order, status: status)
-         
-            
+        if order.status == 1{
+            checkOrder(order: order, status: 2)
+        } else if order.status == 2{
+            checkOrder(order: order, status: 5)
+        }else if order.status == 5{
+            checkOrder(order: order, status: 7)
+        } else if order.status == 7{
+            checkOrder(order: order, status: 3)
         }
         
     }
     
-    func putNewOrder(order : [String: Any],status : Int){
-        let isUser = "\(BASE_URL)\(Orders)\(order["id"]!)/"
-        print(isUser)
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(isUser, method: .put , parameters: order, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                self.statusBtn.setTitle("\(self.statuses[order["status"] as! Int])", for: UIControlState())
-                OrderVC.isChangingStatus = true
-                self.order = order
-                if status == 7{
+    func checkOrder(order : ElementOrder, status : Int){
+        getOrderById(orderId: order.id).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                let orderResponse = ElementOrder(mas: value as! [String : Any])
+                if orderResponse.status != 4{
+                    order.status = status
+                    self.putNewOrder(order: order, status: status)
+                } else {
+//                    self.view.makeToast("Заказ уже был отменен пользователем")
                     self.dismiss(animated: true, completion: nil)
                 }
-            } else {
-                print("Hui")
+                break
+            case .failure(let error):
+//                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+//                self.stopAnimating()
+                print(error)
+                break
+            }
+        }
+    }
+    
+    func putNewOrder(order : ElementOrder, status : Int){
+        patchOrder(order: order).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.statusBtn.setTitle("\(self.statuses[order.status])", for: UIControl.State())
+                OrderVC.isChangingStatus = true
+                self.order = order
+                if order.status == 3{
+                    self.dismiss(animated: true, completion: nil)
+                }
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }

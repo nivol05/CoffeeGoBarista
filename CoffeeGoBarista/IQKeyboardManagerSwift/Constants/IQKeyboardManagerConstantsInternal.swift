@@ -1,8 +1,7 @@
-//  SwipeDirection.swift
-//  XLPagerTabStrip ( https://github.com/xmartlabs/XLPagerTabStrip )
 //
-//  Copyright (c) 2017 Xmartlabs ( http://xmartlabs.com )
-//
+//  IQKeyboardManagerConstantsInternal.swift
+// https://github.com/hackiftekhar/IQKeyboardManager
+// Copyright (c) 2013-16 Iftekhar Qurashi.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+
 import Foundation
 
-public enum SwipeDirection {
-    case left
-    case right
-    case none
-}
+

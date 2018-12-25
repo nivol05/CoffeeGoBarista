@@ -1,8 +1,7 @@
-//  ButtonBarViewCell.swift
-//  XLPagerTabStrip ( https://github.com/xmartlabs/XLPagerTabStrip )
 //
-//  Copyright (c) 2017 Xmartlabs ( http://xmartlabs.com )
-//
+//  IQKeyboardManagerSwift.h
+// https://github.com/hackiftekhar/IQKeyboardManager
+// Copyright (c) 2013-16 Iftekhar Qurashi.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,32 +21,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Foundation
+#import <UIKit/UIKit.h>
 
-open class ButtonBarViewCell: UICollectionViewCell {
+//! Project version number for IQKeyboardManagerSwift.
+FOUNDATION_EXPORT double IQKeyboardManagerSwiftVersionNumber;
 
-    @IBOutlet open var imageView: UIImageView!
-    @IBOutlet open var label: UILabel!
+//! Project version string for IQKeyboardManagerSwift.
+FOUNDATION_EXPORT const unsigned char IQKeyboardManagerSwiftVersionString[];
 
-    public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        isAccessibilityElement = true
-        accessibilityTraits |= UIAccessibilityTraitButton
-        accessibilityTraits |= UIAccessibilityTraitHeader
-    }
-    
-    open override var isSelected: Bool {
-        get {
-            return super.isSelected
-        }
-        set {
-            super.isSelected = newValue
-            if (newValue) {
-                accessibilityTraits |= UIAccessibilityTraitSelected
-            } else {
-                accessibilityTraits &= ~UIAccessibilityTraitSelected
-            }
-        }
-    }
-}
+// In this header, you should import all the public headers of your framework using statements like #import <IQKeyboardManagerSwift/PublicHeader.h>
+
+

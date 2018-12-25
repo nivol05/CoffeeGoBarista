@@ -38,7 +38,7 @@ class Cell: UICollectionViewCell {
         orderIndex.layer.masksToBounds = true
         BG1.layer.cornerRadius = 15
         BG2.layer.cornerRadius = 15
-        BG3.layer.cornerRadius = 42.5 / 2
+        BG3.layer.cornerRadius = 35 / 2 
         BG4.layer.cornerRadius = 15
         BG.layer.masksToBounds = false
 

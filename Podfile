@@ -33,4 +33,8 @@ target 'CoffeeGoBarista' do
 
 	pod 'Firebase/Messaging'
 
+	pod 'Firebase/Core'
+    
+    pod 'SQLite.swift', '~> 0.11.5'
+
 end

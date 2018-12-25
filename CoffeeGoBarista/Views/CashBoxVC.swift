@@ -25,16 +25,16 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     var minChoosed = false
     var maxChoosed = false
     
-    var orders : [[String: Any]] = [[String: Any]]()
+    var orders : [ElementOrder]!
     let statuses = [
         "",
-        "Підтвердити",
-        "Виконую",
-        "Виконано",
-        "Відхилено клієнтом",
-        "Завершити приготування",
-        "Відхилено закладом",
-        "Завершити замовлення"]
+        "Подтвердить",
+        "Готовлю",
+        "Завершено",
+        "Отклонено клиентом",
+        "Завершить приготовление",
+        "Отклонено заведением",
+        "Завершить заказ"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,25 +43,28 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
         
         
-        maxDate.addTarget(self, action: #selector(checkActionMax), for: UIControlEvents.touchDown)
-        minDate.addTarget(self, action: #selector(checkActionMin), for: UIControlEvents.touchDown)
+        maxDate.addTarget(self, action: #selector(checkActionMax), for: UIControl.Event.touchDown)
+        minDate.addTarget(self, action: #selector(checkActionMin), for: UIControl.Event.touchDown)
         
     }
 
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if orders == nil{
+            return 0
+        }
         return orders.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cashbox", for: indexPath) as! CashboxList
-        let index = orders[indexPath.row]
+        let item = orders[indexPath.row]
+        
         cell.orderIndex.text = "\(indexPath.row + 1)"
-        cell.LblPrice.text = "Сумма: \(index["full_price"]!) грн"
-        cell.LblTime.text = "Время: \(index["order_time"]!)"
-        cell.LblOrderRow.text = index["date"] as? String
-        cell.BtnStatus.setTitle("\(self.statuses[index["status"] as! Int])", for: UIControlState())
-        cell.ConerRatio()
+        cell.LblPrice.text = "Сумма: \(item.full_price!) грн"
+        cell.LblTime.text = "Время: \(item.order_time!)"
+        cell.LblOrderRow.text = item.date
+        cell.BtnStatus.setTitle("\(self.statuses[item.status])", for: UIControl.State())
         return cell
         
     }
@@ -69,45 +72,44 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let Storyboard = UIStoryboard(name: "Main", bundle: nil)
         let cell = Storyboard.instantiateViewController(withIdentifier: "OrderPage") as! OrderListVC
-        cell.Id = self.orders[indexPath.row]["id"] as! Int
+        cell.Id = self.orders[indexPath.row].id
         self.navigationController?.pushViewController(cell, animated: true)
     }
     
     func getOrders(filtered : Bool){
-        let isUser = "\(BASE_URL)\(List2_Order)\(staticData.spotId)"
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                self.orders = response.result.value as! [[String : Any]]
+        getOrdersListTwo().responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.orders = setElementOrderList(list: value as! [[String : Any]])
                 if filtered{
                     
                     if !self.maxChoosed && !self.minChoosed{
                         self.collection.reloadData()
                     } else {
-                        var filteredOrders : [[String: Any]] = [[String: Any]]()
-
-                        let dateformat = DateFormatter()
-                        dateformat.dateFormat = "yyyy-MM-dd"
-                    
+                        var filteredOrders = [ElementOrder]()
+                        let startDate = getDate(dateString: self.minDate.text!)
+                        let endDate = getDate(dateString: self.maxDate.text!)
+                        
                         for n in 0..<self.orders.count {
-                            let test = self.orders[n]["date"] as? String
-                            if self.dateInRange(date: test!, start: self.minDate.text!, end: self.maxDate.text!){
+                            let dateNow = getDate(dateString: self.orders[n].date)
+                            if self.dateInRange(date: dateNow, start: startDate, end: endDate){
                                 filteredOrders.append(self.orders[n])
                             }
                         }
-                    
+                        
                         self.orders = filteredOrders
                         self.collection.reloadData()
                     }
                 }
                 self.collection.dataSource = self
                 self.collection.delegate = self
-            } else {
-                print("Hui")
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }
@@ -133,27 +135,10 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     }
     
     
-    func dateInRange(date : String, start : String, end : String) -> Bool{
-//        if date <= start && date >= end{
-//            return true
-//        }
-//        if date >= start && date <= end{
-//            return true
-//        }
-        var dateMas = date.components(separatedBy: "-")
-        var startMas = start.components(separatedBy: "-")
-        var endMas = end.components(separatedBy: "-")
-
-        if (Int(dateMas[0])! >= Int(startMas[0])! && Int(dateMas[0])! <= Int(endMas[0])!) || (Int(dateMas[0])! <= Int(startMas[0])! && Int(dateMas[0])! >= Int(endMas[0])!){
-            if (Int(dateMas[1])! >= Int(startMas[1])! && Int(dateMas[1])! <= Int(endMas[1])!) || (Int(dateMas[1])! <= Int(startMas[1])! && Int(dateMas[1])! >= Int(endMas[1])!){
-                if (Int(dateMas[2])! >= Int(startMas[2])! && Int(dateMas[2])! <= Int(endMas[2])!) || (Int(dateMas[2])! <= Int(startMas[2])! && Int(dateMas[2])! >= Int(endMas[2])!){
-                    return true
-                }
-            }
-        }
-
-        return false
-        }
+    func dateInRange(date : Date, start : Date, end : Date) -> Bool{
+        return (date <= start && date >= end)
+            || (date >= start && date <= end)
+    }
     
     @objc func showMinDate(){
         minChoosed = true
@@ -161,10 +146,8 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         if maxChoosed && minChoosed{
             getOrders(filtered: true)
         }
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = "yyyy-MM-dd"
-        let string = dateformat.string(from: pickedMin.date)
-        minDate.text = string
+        
+        minDate.text = getDateString(date: pickedMin.date)
         self.view.endEditing(true)
     }
     
@@ -175,21 +158,23 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         if maxChoosed && minChoosed{
             getOrders(filtered: true)
         }
-        let dateformat = DateFormatter()
-        dateformat.dateFormat = "yyyy-MM-dd"
-        let string = dateformat.string(from: pickedMax.date)
-        maxDate.text = string
+        
+        maxDate.text = getDateString(date: pickedMax.date)
         self.view.endEditing(true)
     }
     
     @IBAction func cancel(_ sender: Any) {
+        setDefaultsDatePicker()
+        
+        getOrders(filtered: true)
+        cancel.isHidden = true
+    }
+    
+    func setDefaultsDatePicker(){
         minChoosed = false
         maxChoosed = false
         minDate.text = "Выберите дату"
         maxDate.text = "Выберите дату"
-        
-        getOrders(filtered: true)
-        cancel.isHidden = true
     }
     
     @IBAction func dropDownView(_ sender: Any) {

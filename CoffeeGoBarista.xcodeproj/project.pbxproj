@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		A2B0793E4DEC508A991F1F85 /* Pods_CoffeeGoBarista.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE7757EB9DE43D824EA3733A /* Pods_CoffeeGoBarista.framework */; };
 		EF14B3BB2138221300EE6854 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BA2138221300EE6854 /* SignInVC.swift */; };
-		EF14B3BD2138270B00EE6854 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BC2138270B00EE6854 /* Constant.swift */; };
 		EF14B3BF213828E400EE6854 /* staticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF14B3BE213828E400EE6854 /* staticData.swift */; };
+		EF1B2FE921D231760066A64E /* MainMenuList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1B2FE821D231760066A64E /* MainMenuList.swift */; };
+		EF1B2FEB21D232A00066A64E /* CoffeeMenuPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1B2FEA21D232A00066A64E /* CoffeeMenuPage.swift */; };
 		EF388BC420E7A52900378DA4 /* OrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC320E7A52900378DA4 /* OrderVC.swift */; };
 		EF388BC620E7C5DB00378DA4 /* TimeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC520E7C5DA00378DA4 /* TimeVC.swift */; };
 		EF388BC820E92A3100378DA4 /* CashBoxVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF388BC720E92A3100378DA4 /* CashBoxVC.swift */; };
@@ -22,12 +23,37 @@
 		EF468C0420E53B44009178B3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EF468C0320E53B44009178B3 /* Assets.xcassets */; };
 		EF468C0720E53B44009178B3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EF468C0520E53B44009178B3 /* LaunchScreen.storyboard */; };
 		EF468C1820E77EEB009178B3 /* OrdersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF468C1720E77EEB009178B3 /* OrdersList.swift */; };
+		EF6E658121B8058E003434DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EF6E658021B8058E003434DD /* GoogleService-Info.plist */; };
 		EFA5EB7F213ADA170020072D /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB7E213ADA170020072D /* OrderCell.swift */; };
 		EFA5EB81213ADE9E0020072D /* OrderListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB80213ADE9E0020072D /* OrderListVC.swift */; };
-		EFA5EB83213DCC0C0020072D /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB82213DCC0C0020072D /* Order.swift */; };
 		EFA5EB85213E9B660020072D /* OrderItemsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB84213E9B660020072D /* OrderItemsVC.swift */; };
 		EFA5EB87213EA6420020072D /* OrderItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA5EB86213EA6420020072D /* OrderItems.swift */; };
+		EFA75FD421831FF900E84242 /* Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA75FD321831FF900E84242 /* Elements.swift */; };
+		EFA75FD62183220F00E84242 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA75FD52183220F00E84242 /* Network.swift */; };
 		EFABEDE0214ED9F20031EF1A /* TFWitoutCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */; };
+		EFAE2A7D21CA7D0400D41F91 /* Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFAE2A7C21CA7D0400D41F91 /* Interface.swift */; };
+		EFD0DB9D21CB18E100D78F03 /* OrderLimitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DB9C21CB18E100D78F03 /* OrderLimitVC.swift */; };
+		EFD0DBB621CB1B6700D78F03 /* IQTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA021CB1B6700D78F03 /* IQTextView.swift */; };
+		EFD0DBB721CB1B6700D78F03 /* IQPreviousNextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA221CB1B6700D78F03 /* IQPreviousNextView.swift */; };
+		EFD0DBB821CB1B6700D78F03 /* IQTitleBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA321CB1B6700D78F03 /* IQTitleBarButtonItem.swift */; };
+		EFD0DBB921CB1B6700D78F03 /* IQBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA421CB1B6700D78F03 /* IQBarButtonItem.swift */; };
+		EFD0DBBA21CB1B6700D78F03 /* IQToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA521CB1B6700D78F03 /* IQToolbar.swift */; };
+		EFD0DBBB21CB1B6700D78F03 /* IQUIView+IQKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA621CB1B6700D78F03 /* IQUIView+IQKeyboardToolbar.swift */; };
+		EFD0DBBC21CB1B6700D78F03 /* IQInvocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA721CB1B6700D78F03 /* IQInvocation.swift */; };
+		EFD0DBBD21CB1B6700D78F03 /* IQKeyboardManagerConstantsInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBA921CB1B6700D78F03 /* IQKeyboardManagerConstantsInternal.swift */; };
+		EFD0DBBE21CB1B6700D78F03 /* IQKeyboardManagerConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBAA21CB1B6700D78F03 /* IQKeyboardManagerConstants.swift */; };
+		EFD0DBBF21CB1B6700D78F03 /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EFD0DBAC21CB1B6700D78F03 /* IQKeyboardManager.bundle */; };
+		EFD0DBC021CB1B6700D78F03 /* IQKeyboardReturnKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBAD21CB1B6700D78F03 /* IQKeyboardReturnKeyHandler.swift */; };
+		EFD0DBC121CB1B6700D78F03 /* IQKeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBAE21CB1B6700D78F03 /* IQKeyboardManager.swift */; };
+		EFD0DBC221CB1B6700D78F03 /* IQUIScrollView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBB121CB1B6700D78F03 /* IQUIScrollView+Additions.swift */; };
+		EFD0DBC321CB1B6700D78F03 /* IQUIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBB221CB1B6700D78F03 /* IQUIViewController+Additions.swift */; };
+		EFD0DBC421CB1B6700D78F03 /* IQUITextFieldView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBB321CB1B6700D78F03 /* IQUITextFieldView+Additions.swift */; };
+		EFD0DBC521CB1B6700D78F03 /* IQUIView+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBB421CB1B6700D78F03 /* IQUIView+Hierarchy.swift */; };
+		EFD0DBC621CB1B6700D78F03 /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBB521CB1B6700D78F03 /* IQNSArray+Sort.swift */; };
+		EFD0DBC821CBC08D00D78F03 /* TImeUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBC721CBC08D00D78F03 /* TImeUtils.swift */; };
+		EFD0DBCA21CBF4B900D78F03 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBC921CBF4B900D78F03 /* Database.swift */; };
+		EFD0DBCC21CC2AFC00D78F03 /* CanceledBarista.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBCB21CC2AFC00D78F03 /* CanceledBarista.swift */; };
+		EFD0DBCE21CC2B4700D78F03 /* CanceledClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFD0DBCD21CC2B4700D78F03 /* CanceledClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,8 +61,9 @@
 		8CC85FA7B9F7F354B7396F40 /* Pods-CoffeeGoBarista.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoffeeGoBarista.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoffeeGoBarista/Pods-CoffeeGoBarista.debug.xcconfig"; sourceTree = "<group>"; };
 		EE7757EB9DE43D824EA3733A /* Pods_CoffeeGoBarista.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoffeeGoBarista.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EF14B3BA2138221300EE6854 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
-		EF14B3BC2138270B00EE6854 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		EF14B3BE213828E400EE6854 /* staticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = staticData.swift; sourceTree = "<group>"; };
+		EF1B2FE821D231760066A64E /* MainMenuList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuList.swift; sourceTree = "<group>"; };
+		EF1B2FEA21D232A00066A64E /* CoffeeMenuPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoffeeMenuPage.swift; sourceTree = "<group>"; };
 		EF388BC320E7A52900378DA4 /* OrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderVC.swift; sourceTree = "<group>"; };
 		EF388BC520E7C5DA00378DA4 /* TimeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeVC.swift; sourceTree = "<group>"; };
 		EF388BC720E92A3100378DA4 /* CashBoxVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashBoxVC.swift; sourceTree = "<group>"; };
@@ -50,12 +77,38 @@
 		EF468C0620E53B44009178B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EF468C0820E53B44009178B3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EF468C1720E77EEB009178B3 /* OrdersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersList.swift; sourceTree = "<group>"; };
+		EF6E658021B8058E003434DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EFA5EB7E213ADA170020072D /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
 		EFA5EB80213ADE9E0020072D /* OrderListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListVC.swift; sourceTree = "<group>"; };
-		EFA5EB82213DCC0C0020072D /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EFA5EB84213E9B660020072D /* OrderItemsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemsVC.swift; sourceTree = "<group>"; };
 		EFA5EB86213EA6420020072D /* OrderItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItems.swift; sourceTree = "<group>"; };
+		EFA75FD321831FF900E84242 /* Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Elements.swift; sourceTree = "<group>"; };
+		EFA75FD52183220F00E84242 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFWitoutCursor.swift; sourceTree = "<group>"; };
+		EFAE2A7C21CA7D0400D41F91 /* Interface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interface.swift; sourceTree = "<group>"; };
+		EFD0DB9C21CB18E100D78F03 /* OrderLimitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderLimitVC.swift; sourceTree = "<group>"; };
+		EFD0DBA021CB1B6700D78F03 /* IQTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTextView.swift; sourceTree = "<group>"; };
+		EFD0DBA221CB1B6700D78F03 /* IQPreviousNextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQPreviousNextView.swift; sourceTree = "<group>"; };
+		EFD0DBA321CB1B6700D78F03 /* IQTitleBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQTitleBarButtonItem.swift; sourceTree = "<group>"; };
+		EFD0DBA421CB1B6700D78F03 /* IQBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQBarButtonItem.swift; sourceTree = "<group>"; };
+		EFD0DBA521CB1B6700D78F03 /* IQToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQToolbar.swift; sourceTree = "<group>"; };
+		EFD0DBA621CB1B6700D78F03 /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
+		EFD0DBA721CB1B6700D78F03 /* IQInvocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQInvocation.swift; sourceTree = "<group>"; };
+		EFD0DBA921CB1B6700D78F03 /* IQKeyboardManagerConstantsInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstantsInternal.swift; sourceTree = "<group>"; };
+		EFD0DBAA21CB1B6700D78F03 /* IQKeyboardManagerConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManagerConstants.swift; sourceTree = "<group>"; };
+		EFD0DBAC21CB1B6700D78F03 /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		EFD0DBAD21CB1B6700D78F03 /* IQKeyboardReturnKeyHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardReturnKeyHandler.swift; sourceTree = "<group>"; };
+		EFD0DBAE21CB1B6700D78F03 /* IQKeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQKeyboardManager.swift; sourceTree = "<group>"; };
+		EFD0DBAF21CB1B6700D78F03 /* IQKeyboardManagerSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManagerSwift.h; sourceTree = "<group>"; };
+		EFD0DBB121CB1B6700D78F03 /* IQUIScrollView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIScrollView+Additions.swift"; sourceTree = "<group>"; };
+		EFD0DBB221CB1B6700D78F03 /* IQUIViewController+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIViewController+Additions.swift"; sourceTree = "<group>"; };
+		EFD0DBB321CB1B6700D78F03 /* IQUITextFieldView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUITextFieldView+Additions.swift"; sourceTree = "<group>"; };
+		EFD0DBB421CB1B6700D78F03 /* IQUIView+Hierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+Hierarchy.swift"; sourceTree = "<group>"; };
+		EFD0DBB521CB1B6700D78F03 /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
+		EFD0DBC721CBC08D00D78F03 /* TImeUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TImeUtils.swift; sourceTree = "<group>"; };
+		EFD0DBC921CBF4B900D78F03 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
+		EFD0DBCB21CC2AFC00D78F03 /* CanceledBarista.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanceledBarista.swift; sourceTree = "<group>"; };
+		EFD0DBCD21CC2B4700D78F03 /* CanceledClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanceledClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +161,7 @@
 		EF468BFB20E53B41009178B3 /* CoffeeGoBarista */ = {
 			isa = PBXGroup;
 			children = (
+				EFD0DB9E21CB1B6700D78F03 /* IQKeyboardManagerSwift */,
 				EF468C1620E77E8D009178B3 /* Cells */,
 				EF468C1520E77E83009178B3 /* Model */,
 				EF468C1420E77E5A009178B3 /* Views */,
@@ -115,6 +169,7 @@
 				EF468C0020E53B41009178B3 /* Main.storyboard */,
 				EF468C0320E53B44009178B3 /* Assets.xcassets */,
 				EF468C0520E53B44009178B3 /* LaunchScreen.storyboard */,
+				EF6E658021B8058E003434DD /* GoogleService-Info.plist */,
 				EF468C0820E53B44009178B3 /* Info.plist */,
 			);
 			path = CoffeeGoBarista;
@@ -129,6 +184,11 @@
 				EF14B3BA2138221300EE6854 /* SignInVC.swift */,
 				EFA5EB80213ADE9E0020072D /* OrderListVC.swift */,
 				EFA5EB84213E9B660020072D /* OrderItemsVC.swift */,
+				EFD0DB9C21CB18E100D78F03 /* OrderLimitVC.swift */,
+				EFD0DBCB21CC2AFC00D78F03 /* CanceledBarista.swift */,
+				EFD0DBCD21CC2B4700D78F03 /* CanceledClient.swift */,
+				EF1B2FE821D231760066A64E /* MainMenuList.swift */,
+				EF1B2FEA21D232A00066A64E /* CoffeeMenuPage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -136,10 +196,13 @@
 		EF468C1520E77E83009178B3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				EF14B3BC2138270B00EE6854 /* Constant.swift */,
 				EF14B3BE213828E400EE6854 /* staticData.swift */,
-				EFA5EB82213DCC0C0020072D /* Order.swift */,
 				EFABEDDF214ED9F20031EF1A /* TFWitoutCursor.swift */,
+				EFA75FD321831FF900E84242 /* Elements.swift */,
+				EFA75FD52183220F00E84242 /* Network.swift */,
+				EFAE2A7C21CA7D0400D41F91 /* Interface.swift */,
+				EFD0DBC721CBC08D00D78F03 /* TImeUtils.swift */,
+				EFD0DBC921CBF4B900D78F03 /* Database.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -157,6 +220,71 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		EFD0DB9E21CB1B6700D78F03 /* IQKeyboardManagerSwift */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DB9F21CB1B6700D78F03 /* IQTextView */,
+				EFD0DBA121CB1B6700D78F03 /* IQToolbar */,
+				EFD0DBA821CB1B6700D78F03 /* Constants */,
+				EFD0DBAB21CB1B6700D78F03 /* Resources */,
+				EFD0DBAD21CB1B6700D78F03 /* IQKeyboardReturnKeyHandler.swift */,
+				EFD0DBAE21CB1B6700D78F03 /* IQKeyboardManager.swift */,
+				EFD0DBAF21CB1B6700D78F03 /* IQKeyboardManagerSwift.h */,
+				EFD0DBB021CB1B6700D78F03 /* Categories */,
+			);
+			path = IQKeyboardManagerSwift;
+			sourceTree = "<group>";
+		};
+		EFD0DB9F21CB1B6700D78F03 /* IQTextView */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DBA021CB1B6700D78F03 /* IQTextView.swift */,
+			);
+			path = IQTextView;
+			sourceTree = "<group>";
+		};
+		EFD0DBA121CB1B6700D78F03 /* IQToolbar */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DBA221CB1B6700D78F03 /* IQPreviousNextView.swift */,
+				EFD0DBA321CB1B6700D78F03 /* IQTitleBarButtonItem.swift */,
+				EFD0DBA421CB1B6700D78F03 /* IQBarButtonItem.swift */,
+				EFD0DBA521CB1B6700D78F03 /* IQToolbar.swift */,
+				EFD0DBA621CB1B6700D78F03 /* IQUIView+IQKeyboardToolbar.swift */,
+				EFD0DBA721CB1B6700D78F03 /* IQInvocation.swift */,
+			);
+			path = IQToolbar;
+			sourceTree = "<group>";
+		};
+		EFD0DBA821CB1B6700D78F03 /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DBA921CB1B6700D78F03 /* IQKeyboardManagerConstantsInternal.swift */,
+				EFD0DBAA21CB1B6700D78F03 /* IQKeyboardManagerConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		EFD0DBAB21CB1B6700D78F03 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DBAC21CB1B6700D78F03 /* IQKeyboardManager.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EFD0DBB021CB1B6700D78F03 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				EFD0DBB121CB1B6700D78F03 /* IQUIScrollView+Additions.swift */,
+				EFD0DBB221CB1B6700D78F03 /* IQUIViewController+Additions.swift */,
+				EFD0DBB321CB1B6700D78F03 /* IQUITextFieldView+Additions.swift */,
+				EFD0DBB421CB1B6700D78F03 /* IQUIView+Hierarchy.swift */,
+				EFD0DBB521CB1B6700D78F03 /* IQNSArray+Sort.swift */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -168,8 +296,8 @@
 				EF468BF520E53B41009178B3 /* Sources */,
 				EF468BF620E53B41009178B3 /* Frameworks */,
 				EF468BF720E53B41009178B3 /* Resources */,
-				B47D6963C5F5E8850C796004 /* [CP] Embed Pods Frameworks */,
 				C0E94ADC26876C25413803A6 /* [CP] Copy Pods Resources */,
+				1FA71223ECC3EAAF8DE4C05C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -192,6 +320,7 @@
 				TargetAttributes = {
 					EF468BF820E53B41009178B3 = {
 						CreatedOnToolsVersion = 9.4;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -220,6 +349,8 @@
 			files = (
 				EF468C0720E53B44009178B3 /* LaunchScreen.storyboard in Resources */,
 				EF388BD220EA6C8F00378DA4 /* Cell.xib in Resources */,
+				EFD0DBBF21CB1B6700D78F03 /* IQKeyboardManager.bundle in Resources */,
+				EF6E658121B8058E003434DD /* GoogleService-Info.plist in Resources */,
 				EF468C0420E53B44009178B3 /* Assets.xcassets in Resources */,
 				EF468C0220E53B41009178B3 /* Main.storyboard in Resources */,
 			);
@@ -228,10 +359,12 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		B47D6963C5F5E8850C796004 /* [CP] Embed Pods Frameworks */ = {
+		1FA71223ECC3EAAF8DE4C05C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-CoffeeGoBarista/Pods-CoffeeGoBarista-frameworks.sh",
@@ -243,13 +376,17 @@
 				"${BUILT_PRODUCTS_DIR}/HCSStarRatingView/HCSStarRatingView.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SeamlessSlideUpScrollView/SeamlessSlideUpScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/Tamamushi/Tamamushi.framework",
 				"${BUILT_PRODUCTS_DIR}/XLPagerTabStrip/XLPagerTabStrip.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlamofireImage.framework",
@@ -259,11 +396,13 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HCSStarRatingView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SeamlessSlideUpScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Tamamushi.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/XLPagerTabStrip.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -314,20 +453,44 @@
 			buildActionMask = 2147483647;
 			files = (
 				EF468C1820E77EEB009178B3 /* OrdersList.swift in Sources */,
+				EF1B2FEB21D232A00066A64E /* CoffeeMenuPage.swift in Sources */,
+				EFD0DBBE21CB1B6700D78F03 /* IQKeyboardManagerConstants.swift in Sources */,
+				EFD0DBC021CB1B6700D78F03 /* IQKeyboardReturnKeyHandler.swift in Sources */,
 				EFA5EB7F213ADA170020072D /* OrderCell.swift in Sources */,
+				EFD0DBC621CB1B6700D78F03 /* IQNSArray+Sort.swift in Sources */,
+				EFD0DBB921CB1B6700D78F03 /* IQBarButtonItem.swift in Sources */,
+				EFD0DBCA21CBF4B900D78F03 /* Database.swift in Sources */,
 				EF388BC620E7C5DB00378DA4 /* TimeVC.swift in Sources */,
+				EFD0DBC421CB1B6700D78F03 /* IQUITextFieldView+Additions.swift in Sources */,
 				EFABEDE0214ED9F20031EF1A /* TFWitoutCursor.swift in Sources */,
-				EF14B3BD2138270B00EE6854 /* Constant.swift in Sources */,
+				EFAE2A7D21CA7D0400D41F91 /* Interface.swift in Sources */,
+				EFD0DBBB21CB1B6700D78F03 /* IQUIView+IQKeyboardToolbar.swift in Sources */,
 				EFA5EB85213E9B660020072D /* OrderItemsVC.swift in Sources */,
+				EFD0DBB821CB1B6700D78F03 /* IQTitleBarButtonItem.swift in Sources */,
+				EFD0DBBA21CB1B6700D78F03 /* IQToolbar.swift in Sources */,
 				EF14B3BB2138221300EE6854 /* SignInVC.swift in Sources */,
+				EFD0DBBD21CB1B6700D78F03 /* IQKeyboardManagerConstantsInternal.swift in Sources */,
+				EFD0DBCC21CC2AFC00D78F03 /* CanceledBarista.swift in Sources */,
 				EFA5EB81213ADE9E0020072D /* OrderListVC.swift in Sources */,
 				EF388BD120EA6C8F00378DA4 /* Cell.swift in Sources */,
+				EFD0DB9D21CB18E100D78F03 /* OrderLimitVC.swift in Sources */,
+				EFA75FD421831FF900E84242 /* Elements.swift in Sources */,
 				EFA5EB87213EA6420020072D /* OrderItems.swift in Sources */,
+				EF1B2FE921D231760066A64E /* MainMenuList.swift in Sources */,
+				EFD0DBCE21CC2B4700D78F03 /* CanceledClient.swift in Sources */,
 				EF14B3BF213828E400EE6854 /* staticData.swift in Sources */,
 				EF388BCE20EA344600378DA4 /* CashboxList.swift in Sources */,
+				EFD0DBC521CB1B6700D78F03 /* IQUIView+Hierarchy.swift in Sources */,
 				EF468BFD20E53B41009178B3 /* AppDelegate.swift in Sources */,
-				EFA5EB83213DCC0C0020072D /* Order.swift in Sources */,
+				EFD0DBC321CB1B6700D78F03 /* IQUIViewController+Additions.swift in Sources */,
+				EFD0DBC821CBC08D00D78F03 /* TImeUtils.swift in Sources */,
+				EFD0DBC121CB1B6700D78F03 /* IQKeyboardManager.swift in Sources */,
+				EFD0DBC221CB1B6700D78F03 /* IQUIScrollView+Additions.swift in Sources */,
+				EFD0DBBC21CB1B6700D78F03 /* IQInvocation.swift in Sources */,
+				EFA75FD62183220F00E84242 /* Network.swift in Sources */,
+				EFD0DBB721CB1B6700D78F03 /* IQPreviousNextView.swift in Sources */,
 				EF388BC820E92A3100378DA4 /* CashBoxVC.swift in Sources */,
+				EFD0DBB621CB1B6700D78F03 /* IQTextView.swift in Sources */,
 				EF388BC420E7A52900378DA4 /* OrderVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -473,16 +636,17 @@
 			baseConfigurationReference = 8CC85FA7B9F7F354B7396F40 /* Pods-CoffeeGoBarista.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7JSG597976;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 933F83CUZH;
 				INFOPLIST_FILE = CoffeeGoBarista/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.NiVoLGame.CoffeeGoBarista;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CoffeeGo.CoffeeGoBarista;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = CoffeeGoBaristaDev;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -493,16 +657,17 @@
 			baseConfigurationReference = 5082D6700E317AB64ED01236 /* Pods-CoffeeGoBarista.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7JSG597976;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 933F83CUZH;
 				INFOPLIST_FILE = CoffeeGoBarista/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.NiVoLGame.CoffeeGoBarista;
+				PRODUCT_BUNDLE_IDENTIFIER = com.CoffeeGo.CoffeeGoBarista;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = CoffeeGoBaristaDev;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

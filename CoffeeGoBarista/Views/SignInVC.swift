@@ -19,18 +19,33 @@ class SignInVC: UIViewController {
     @IBOutlet weak var signInBtn: UIButton!
     @IBOutlet weak var loginTF: UITextField!
     
-    var coffeeSpots : [[String: Any]] = [[String: Any]]()
-    var user : [[String: Any]] = [[String: Any]]()
+    var user : ElementUser!
+    let database = DBBarista()
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        passwordTF.text = "barista_coffee_go"
-        loginTF.text = "baristago@gmail.com"
+        
+        views()
+        if database.getUser() != nil{
+            let user = database.getUser()!
+            passwordTF.text = user.password
+            loginTF.text = user.username
+            
+            getToken()
+        } else {
+            passwordTF.text = "barista_coffee_go"
+            loginTF.text = "baristago@gmail.com"
+        }
     }
+    
+    func views(){
+        cornerRatio(view: signInBtn, ratio: signInBtn.frame.height / 2, masksToBounds : false)
+        cornerRatio(view: logoImg, ratio: 10, masksToBounds: false)
+    }
+    
     @IBAction func signInBtn(_ sender: Any) {
         if notEmpty(){
-            
             getToken()
         }
     }
@@ -45,70 +60,70 @@ class SignInVC: UIViewController {
     
     
     func check(){
-        let IsBarista = "\(BASE_URL)\(checkBarista)\(loginTF.text!)"
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(IsBarista, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                self.coffeeSpots = response.result.value as! [[String : Any]]
-                print(self.coffeeSpots)
+        checkBarista(username: loginTF.text!).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                let coffeeSpots = value as! [[String : Any]]
                 
-                if self.coffeeSpots.count == 0{
-                    print("zalupa")
+                if coffeeSpots.count == 0{
+                    print("zaloopa")
                 } else {
-                    
-                    staticData.spotId = self.coffeeSpots[0]["id"] as! Int
-                    self.getMenu()
-                    
-                    self.getUser()
+                    let spot = ElementCoffeeSpot(mas: coffeeSpots[0])
+                    if spot.is_closed{
+                        // MAKE TOAST SPOT IS TAKEN
+                    } else {
+                        current_coffee_spot = spot
+                        self.getMenu()
+                    }
                 }
-                
-                
-            } else {
-//                print("Hui")
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }
     
     func getMenu(){
-        let MenuUrl = "\(BASE_URL)\(Menu)\(staticData.spotId)"
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        Alamofire.request(MenuUrl, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            if response.result.isSuccess {
-                staticData.menu = response.result.value as! [[String : Any]]
+        getProductsForSpot().responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                menu = setElementProductList(list: value as! [[String : Any]])
+                self.getUser()
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
-            
         }
     }
     
     func getUser(){
-        let isUser = "\(BASE_URL)\(checkBarista)\(loginTF.text!)"
-        let params : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        Alamofire.request(isUser, method: .get , parameters: nil, encoding: URLEncoding(), headers : params).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                self.user = response.result.value as! [[String : Any]]
-                self.performSegue(withIdentifier: "main", sender: self.signInBtn)
-//                self.postFCM(id: self.user[0]["id"] as! Int)
-                
-    
-            } else {
-                print("Hui")
+        getUsers(username: loginTF.text!).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                self.user = ElementUser(mas: (value as! [[String : Any]])[0])
+                self.user.password = self.passwordTF.text!
+                self.postFCM(id: self.user.id)
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }
     
     func postFCM(id : Int){
         
-        let url = "\(BASE_URL)\(FCM)"
         let params: [String: Any] = [
             "name": loginTF.text!,
             "user": id,
@@ -118,47 +133,51 @@ class SignInVC: UIViewController {
             "type" : "ios"
         ]
         
-        let paramsAuth : HTTPHeaders = [
-            "Authorization": staticData.token
-        ]
-        
-        
-        Alamofire.request(url, method: .post , parameters: params, encoding: URLEncoding(), headers: paramsAuth).responseJSON { (response) in
-            
-            if response.result.isSuccess {
-                print(response.result.value)
-                
-                
-            } else {
-                print("Hui")
+        postFcmDevice(toPost: params).responseJSON { (response) in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                if self.database.getUser() == nil{
+                    self.database.setUser(user: self.user)
+                }
+                self.performSegue(withIdentifier: "main", sender: self.signInBtn)
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }
     
     func getToken(){
 
-        let url = "\(BASE_URL)\(pathLog)"
         let params: [String: Any] = [
             "username": loginTF.text!,
             "password": passwordTF.text!
         ]
-        
-        
-        Alamofire.request(url, method: .post , parameters: params, encoding: URLEncoding(), headers: nil).responseJSON { (response) in
+        getTokenAuth(user: params).responseJSON { (response) in
             
-            if response.result.isSuccess {
-                let jsonData = JSON(response.value!)
-                print(response.value!)
+            switch response.result {
+            case .success(let value):
+                print(value)
+                let jsonData = JSON(value)
                 if jsonData["token"] == JSON.null{
                     print("zalupa")
                 } else {
-                    staticData.token = "Token \(jsonData["token"].string!)"
+                    let token = "Token \(jsonData["token"].string!)"
+                    header = [
+                        "Authorization": token
+                    ]
                     self.check()
                 }
-               
-
-            } else {
-                print("Hui")
+                break
+            case .failure(let error):
+                //                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                //                self.stopAnimating()
+                print(error)
+                break
             }
         }
     }

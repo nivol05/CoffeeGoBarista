@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Firebase
+import Firebase
 //import FirebaseMessaging
 //import FirebaseInstanceID
 import Tamamushi
@@ -19,10 +19,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     //static var isMenuVC = true
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         TMGradientNavigationBar().setInitialBarGradientColor(direction: .vertical, startColor: .init(red: 1, green: 127/255, blue: 0, alpha: 1), endColor: .init(red: 1, green: 111/255, blue: 0, alpha: 1))
         // Override point for customization after application launch.
-//        FirebaseApp.configure()
+        FirebaseApp.configure()
+        
+        keyboard()
         
 //        print(Messaging.messaging().apnsToken)
         return true
@@ -48,6 +50,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func keyboard(){
+        IQKeyboardManager.shared.enable = true
+        IQKeyboardManager.shared.toolbarDoneBarButtonItemText = "Готово"
+        //        IQKeyboardManager.shared.enableAutoToolbar = false
     }
 
 
