@@ -8,6 +8,8 @@
 
 import Foundation
 
+var timerOn = false
+
 func getTimeNow() -> String{
     let today = Date()
     let formatter = DateFormatter()

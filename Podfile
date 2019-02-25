@@ -36,5 +36,15 @@ target 'CoffeeGoBarista' do
 	pod 'Firebase/Core'
     
     pod 'SQLite.swift', '~> 0.11.5'
+    
+    pod 'Toast-Swift', '~> 3.0.0'
+    
+    pod 'NVActivityIndicatorView'
+    
+    pod 'SwiftMessages'
+    
+    pod 'PopupDialog', '~> 0.8.1'
+    
+    pod 'Siren'
 
 end

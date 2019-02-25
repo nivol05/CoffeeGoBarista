@@ -63,23 +63,27 @@ class ElementOrderItem{
 class ElementOrder{
     var id : Int!
     var user : Int!
+    var username: String!
     var coffee_spot : Int!
     var full_price : Int!
     var date : String!
     var comment : String!
     var order_time : String!
     var status : Int!
+    var takeaway : Bool!
     var canceled_barista_message : String!
     
     init(mas: [String : Any]) {
         id = mas["id"] as? Int
         user = mas["user"] as? Int
+        username = mas["username"] as? String
         coffee_spot = mas["coffee_spot"] as? Int
         full_price = mas["full_price"] as? Int
         date = mas["date"] as? String
         comment = mas["comment"] as? String
         order_time = mas["order_time"] as? String
         status = mas["status"] as? Int
+        takeaway = mas["takeaway"] as? Bool
         canceled_barista_message = mas["canceled_barista_message"] as? String
     }
     
@@ -122,6 +126,15 @@ class ElementProduct{
         m_cup = mas["m_cup"] as? Int
         b_cup = mas["b_cup"] as? Int
         active = mas["active"] as? Bool
+    }
+    
+    func toPatch() -> [String : Any]{
+        var mas = [String : Any]()
+        if active != nil{
+            mas["active"] = active
+        }
+    
+        return mas
     }
 }
 

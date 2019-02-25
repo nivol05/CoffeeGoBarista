@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import NVActivityIndicatorView
 
 
 func cornerRatio(view : UIView, ratio : CGFloat, masksToBounds : Bool){
