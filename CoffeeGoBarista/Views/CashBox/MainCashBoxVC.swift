@@ -26,6 +26,18 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    
+    
+    @IBOutlet weak var popubsWindowBG: UIView!
+    
+    @IBOutlet weak var inventoryBG: UIView!
+    
+    @IBOutlet weak var discountBG: UIView!
+    
+    @IBOutlet weak var outlayBG: UIView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -52,7 +64,7 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
         cornerRatio(view: goHomeBtn, ratio: 8, masksToBounds: false)
         cornerRatio(view: searchBarBG, ratio: 8, masksToBounds: false)
         cornerRatio(view: discoundBtn, ratio: 8, masksToBounds: false)
-        cornerRatio(view: cancelBtn, ratio: 8, masksToBounds: false)
+        
         cornerRatio(view: confirmBtn, ratio: 8, masksToBounds: false)
         
         tableView.delegate = self
@@ -85,4 +97,31 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
         return cell
     }
 
+    @IBAction func inventoryBtn(_ sender: Any) {
+        inventoryBG.isHidden = false
+        fadeView(view: popubsWindowBG, delay: 0, isHiden: false)
+        
+    }
+    @IBAction func cancelInventoryWindow(_ sender: Any) {
+        fadeView(view: popubsWindowBG, delay: 0, isHiden: true)
+        inventoryBG.isHidden = true
+    }
+    
+    
+    @IBAction func discountBtn(_ sender: Any) {
+        discountBG.isHidden = false
+        fadeView(view: popubsWindowBG, delay: 0, isHiden: false)
+    }
+    @IBAction func cancelDiscountBtn(_ sender: Any) {
+        discountBG.isHidden = true
+        fadeView(view: popubsWindowBG, delay: 0, isHiden: true)
+    }
+    
+    @IBAction func outlayBtn(_ sender: Any) {
+        outlayBG.isHidden = false
+    }
+    @IBAction func cancelOutlayBtn(_ sender: Any) {
+        outlayBG.isHidden = true
+    }
+    
 }
