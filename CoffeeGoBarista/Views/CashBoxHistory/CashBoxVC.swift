@@ -16,6 +16,7 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     @IBOutlet weak var titile: UINavigationItem!
     @IBOutlet weak var collection: UICollectionView!
     @IBOutlet weak var DropView: UIView!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var minDate: UITextField!
     @IBOutlet weak var maxDate: UITextField!
     @IBOutlet weak var cancel: UIButton!
@@ -28,8 +29,11 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     let toolbar = UIToolbar()
     let pickedMax = UIDatePicker()
     let pickedMin = UIDatePicker()
+    
     var minChoosed = false
     var maxChoosed = false
+    var changeCashBoxList = false
+    
     var allOrderCost = 0
     
     var orders : [ElementOrder]!
@@ -54,6 +58,8 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
         cornerRatio(view: calendarBtn, ratio: 5, masksToBounds: false)
         
+        self.collection.register(UINib(nibName: "OfflineCashBoxCell", bundle: nil), forCellWithReuseIdentifier: "SecCell")
+        
         
 //        startAnimating(type : NVActivityIndicatorType.ballPulseSync)
         toolbar.sizeToFit()
@@ -71,17 +77,32 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        super.viewWillAppear(animated)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override var prefersStatusBarHidden: Bool{
         return false
     }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if UIScreen.main.bounds.width < 1000{
-            return CGSize(width: UIScreen.main.bounds.width / 3 - 20 , height: 155)
+        if changeCashBoxList{
+            if UIScreen.main.bounds.width < 1000{
+                return CGSize(width: UIScreen.main.bounds.width / 3 - 20 , height: 155)
+            }
+            else {
+                return CGSize(width: 230 , height: 155)
+            }
         } else {
-            return CGSize(width: 230 , height: 180)
+            return CGSize(width: 230 , height: 120)
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -98,25 +119,34 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if changeCashBoxList{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cashbox", for: indexPath) as! CashboxList
+            let item = orders[indexPath.row]
+            
+            cell.orderIndex.text = "\(indexPath.row + 1)"
+            cell.LblPrice.text = "Сумма: \(item.full_price!) грн"
+            cell.LblTime.text = "Время: \(item.order_time!)"
+            //        cell.nameLbl.text = "\(order.username!)"
+            cell.LblOrderRow.text = item.date
+            cell.BtnStatus.setTitle("\(self.statuses[item.status])", for: UIControl.State())
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecCell", for: indexPath)
+            return cell
+        }
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cashbox", for: indexPath) as! CashboxList
-        let item = orders[indexPath.row]
-        
-        cell.orderIndex.text = "\(indexPath.row + 1)"
-        cell.LblPrice.text = "Сумма: \(item.full_price!) грн"
-        cell.LblTime.text = "Время: \(item.order_time!)"
-//        cell.nameLbl.text = "\(order.username!)"
-        cell.LblOrderRow.text = item.date
-        cell.BtnStatus.setTitle("\(self.statuses[item.status])", for: UIControl.State())
-        return cell
         
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let cell = Storyboard.instantiateViewController(withIdentifier: "OrderPage") as! OrderListVC
-        cell.Id = self.orders[indexPath.row].id
-        self.navigationController?.pushViewController(cell, animated: true)
+        if changeCashBoxList{
+            let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let cell = Storyboard.instantiateViewController(withIdentifier: "OrderPage") as! OrderListVC
+            cell.Id = self.orders[indexPath.row].id
+            self.navigationController?.pushViewController(cell, animated: true)
+        } else {
+            presentPopup(popupVC: OffineOrderListVC(), mainVC: self)
+        }
     }
     
     func getAllOrderPrice(filtered: Bool){
@@ -125,9 +155,9 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             allPrice += order.full_price
         }
         if filtered{
-            titile.title = "Выбранные заказы (\(orders.count)) на сумму: \(allPrice) грн"
+            titleLbl.text = "Выбранные заказы (\(orders.count)) на сумму: \(allPrice) грн"
         } else{
-            titile.title = "Все заказы (\(orders.count)) на сумму: \(allPrice) грн"
+            titleLbl.text = "Все заказы (\(orders.count)) на сумму: \(allPrice) грн"
         }
     }
     
@@ -138,7 +168,7 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             switch response.result {
             case .success(let value):
                 print(value)
-                self.orders = setElementOrderList(list: value as! [[String : Any]])
+                self.orders = setElementList(list: value as! [[String : Any]])
                 if self.orders.count == 0{
                     self.emptyView.isHidden = false
                 } else {
@@ -280,6 +310,16 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     @IBAction func refreshBtn(_ sender: Any) {
         loading(activity: true)
         getOrders(filtered: false)
+    }
+    
+    @IBAction func changeCashBoxList(_ sender: Any) {
+        if changeCashBoxList{
+            collection.reloadData()
+            changeCashBoxList.toggle()
+        } else {
+            collection.reloadData()
+            changeCashBoxList.toggle()
+        }
     }
     
     

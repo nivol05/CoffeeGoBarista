@@ -22,7 +22,16 @@ let ADDITIONALS_URL = "\(URL_GO)/api/customers/additionals/"
 let COFFEE_SPOTS = "\(URL_GO)/api/customers/coffee_spots/"
 let USER = "\(URL_GO)/api/customers/user/"
 let FCM_DEV = "\(URL_GO)/api/customers/fcm_devices/"
-
+let CUPS = "\(URL_GO)/api/customers/cups/"
+let DISCOUNTS = "\(URL_GO)/api/customers/discounts/"
+let STORAGE_ITEMS = "\(URL_GO)/api/customers/storage_items/"
+let INCOMES = "\(URL_GO)/api/customers/incomes/"
+let PRODUCT_OUTCOMES = "\(URL_GO)/api/customers/product_outcomes/"
+let INVENTORIZATIONS = "\(URL_GO)/api/customers/inventorizations/"
+let ORDER_ITEMS_OFFLINE = "\(URL_GO)/api/customers/order_item_offline/"
+let OUTCOMES = "\(URL_GO)/api/customers/outcomes/"
+let SHIFTS = "\(URL_GO)/api/customers/shifts/"
+let STORAGE_ITEM_PRODUCT_TYPE = "\(URL_GO)/api/customers/storage_item_product_type/"
 
 var header : HTTPHeaders!
 
@@ -43,6 +52,43 @@ func postFcmDevice(toPost: [String : Any]) -> DataRequest{
     let link = "\(FCM_DEV)"
     return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
 }
+
+func postIncomes(toPost: [String : Any]) -> DataRequest{
+    let link = "\(INCOMES)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postOutcomes(toPost: [String : Any]) -> DataRequest{
+    let link = "\(OUTCOMES)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postProductOutcomes(toPost: [String : Any]) -> DataRequest{
+    let link = "\(PRODUCT_OUTCOMES)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postInventorization(toPost: [String : Any]) -> DataRequest{
+    let link = "\(INVENTORIZATIONS)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postOrderOffline(toPost: [String : Any]) -> DataRequest{
+    let link = "\(ORDERS)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postOrderItemsOffline(toPost: [String : Any]) -> DataRequest{
+    let link = "\(ORDER_ITEMS_OFFLINE)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+func postShifts(toPost: [String : Any]) -> DataRequest{
+    let link = "\(SHIFTS)"
+    return Alamofire.request(link, method: .post , parameters: toPost, encoding: URLEncoding(), headers : header)
+}
+
+
 
 func checkBarista(username: String) -> DataRequest{
     let link = "\(COFFEE_SPOTS)?username=\(username)"
@@ -68,6 +114,17 @@ func patchProduct(productId: Int, active: Bool) -> DataRequest{
     return Alamofire.request(link, method: .patch , parameters: toPatch, encoding: URLEncoding(), headers : header)
 }
 
+func patchShifts(id: Int, toPatch: [String : Any]) -> DataRequest{
+    let link = "\(SHIFTS)\(id)/"
+    return Alamofire.request(link, method: .patch , parameters: toPatch, encoding: URLEncoding(), headers : header)
+}
+
+func patchSpotSyncTime(id: Int, sync_time: String) -> DataRequest{
+    let link = "\(COFFEE_SPOTS)\(id)/"
+    var toPatch = [String : Any]()
+    toPatch["sync_time"] = sync_time
+    return Alamofire.request(link, method: .patch , parameters: toPatch, encoding: URLEncoding(), headers : header)
+}
 //func patchSpotLimit(limit: String) -> DataRequest{
 //    let link = "\(COFFEE_SPOTS)\(current_coffee_spot.id!)/"
 //    let toPatch = ElementCoffeeSpot(mas: [String : Any]())
@@ -166,3 +223,24 @@ func getAllProductTypes() -> DataRequest{
                              encoding: URLEncoding(),
                              headers: header)
 }
+
+func getCups(spotId: Int) -> DataRequest{
+    let link = "\(CUPS)?spot_id=\(spotId)"
+    return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
+}
+
+func getDiscounts(spotId: Int) -> DataRequest{
+    let link = "\(DISCOUNTS)?spot_id=\(spotId)"
+    return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
+}
+
+func getStorageItems(spotId: Int) -> DataRequest{
+    let link = "\(STORAGE_ITEMS)?spot_id=\(spotId)"
+    return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
+}
+
+func getStorageItemsProductType(spotId: Int) -> DataRequest{
+    let link = "\(STORAGE_ITEM_PRODUCT_TYPE)?spot_id=\(spotId)"
+    return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
+}
+

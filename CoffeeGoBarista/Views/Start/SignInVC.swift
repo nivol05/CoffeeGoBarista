@@ -78,7 +78,7 @@ class SignInVC: UIViewController, NVActivityIndicatorViewable {
                         self.stopAnimating()
                     } else {
                         current_coffee_spot = spot
-                        self.getMenu()
+                        self.downloadData()
                     }
                 }
                 break
@@ -90,58 +90,23 @@ class SignInVC: UIViewController, NVActivityIndicatorViewable {
             }
         }
     }
-    
-    func getMenu(){
-        getProductsForSpot().responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                print(value)
-                menu = setElementProductList(list: value as! [[String : Any]])
-                self.getAdds()
-                break
-            case .failure(let error):
-                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
-                self.stopAnimating()
-                print(error)
-                break
-            }
+
+    func downloadData(){
+        let error = {
+            self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+            self.stopAnimating()
         }
-    }
-    
-    func getAdds(){
-        getAdditionalsForSpot(spotId: "\(current_coffee_spot.id!)").responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                additionals = value as! [[String : Any]]
-                self.getSyrups()
-                break
-            case .failure(let error):
-                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
-                self.stopAnimating()
-                print(error)
-                break
-            }
+        
+        let success = {
+            self.setTabs()
         }
-    }
-    
-    func getSyrups(){
-        getSyrupsForSpot(spotId: "\(current_coffee_spot.id!)").responseJSON { (response) in
-            switch response.result {
-            case .success(let value):
-                syrups = value as! [[String : Any]]
-                self.setTabs()
-                break
-            case .failure(let error):
-                self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
-                self.stopAnimating()
-                print(error)
-                break
-            }
-        }
+        
+        LoadUtils(error: error, success: success).startDownloading()
     }
     
     func setTabs(){
         tabs = []
+        let menu = db.getProducts()
         
         for i in 0..<menu.count{
             var here = false

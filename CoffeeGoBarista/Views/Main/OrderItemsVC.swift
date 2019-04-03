@@ -46,6 +46,10 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
     var orderItems : [ElementOrderItem]!
     var order : ElementOrder!
     
+    var menu: [ElementProduct]!
+    var syrups: [SyrupElem]!
+    var additionals: [AdditionalElem]!
+    
     let statuses = [
         "",
         "Подтвердить",
@@ -68,6 +72,11 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        menu = db.getProducts()
+        syrups = db.getSyrups()
+        additionals = db.getAdds()
+        
         style()
 //        performSegue(withIdentifier: "goToMain", sender: nil)
 //        dismiss(animated: true, completion: nil)
@@ -140,7 +149,7 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
         
         //CoffeeImag
         if element.img != nil{
-            cell?.ImgCoffee.kf.setImage(with: URL(string: element.img)!)
+            cell?.ImgCoffee.kf.setImage(with: URL(string: element.img!)!)
         } else{
             cell?.ImgCoffee.image = #imageLiteral(resourceName: "coffee-cup")
         }
@@ -180,9 +189,9 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let value = syrupsInStr[i]
                 
                 for x in syrups{
-                    if value == x["name"] as! String{
-                        syrupsText.append(x["name"] as! String)
-                        syrupsText.append("( +\(x["price"] as! Int) грн)")
+                    if value == x.name{
+                        syrupsText.append(x.name)
+                        syrupsText.append("( +\(x.price) грн)")
                         break
                     }
                 }
@@ -204,9 +213,9 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
                 let value = addsInStr[i]
                 
                 for x in additionals{
-                    if value == x["name"] as! String{
-                        addsText.append(x["name"] as! String)
-                        addsText.append("( +\(x["price"] as! Int) грн)")
+                    if value == x.name{
+                        addsText.append(x.name)
+                        addsText.append("( +\(x.price) грн)")
                         break
                     }
                 }
@@ -303,7 +312,7 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
             switch response.result {
             case .success(let value):
                 print(value)
-                self.orderItems = setElementOrderItemList(list: value as! [[String : Any]])
+                self.orderItems = setElementList(list: value as! [[String : Any]])
             
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
@@ -372,6 +381,8 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
                     let redViewController = mainStoryBoard.instantiateViewController(withIdentifier: "Bar")
                     let appDelegate = UIApplication.shared.delegate as! AppDelegate
                     appDelegate.window?.rootViewController = redViewController
+//                    TEST IT
+//                    navigationController?.popViewController(animated: true)
                 }
                 break
             case .failure(let error):

@@ -53,7 +53,7 @@ class HotDrinkVC: UIViewController, IndicatorInfoProvider, UITableViewDelegate, 
         cell.nameLbl.text = data.name
         
         if data.img != nil{
-            cell.thingImg.kf.setImage(with: URL(string: data.img)!)
+            cell.thingImg.kf.setImage(with: URL(string: data.img!)!)
         } else{
             cell.thingImg.image = #imageLiteral(resourceName: "coffee-cup")
         }

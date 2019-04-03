@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StartWorkVC" customModule="CoffeeGoBarista" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="565" height="447"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aji-US-OaU">
+                    <rect key="frame" x="32.5" y="78.5" width="500" height="290"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rKd-8N-KeE">
+                            <rect key="frame" x="440" y="0.0" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="MHa-mE-2dy"/>
+                                <constraint firstAttribute="width" constant="60" id="gC9-Ib-ULZ"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="22" minY="22" maxX="22" maxY="22"/>
+                            <state key="normal" image="cancel-music"/>
+                            <connections>
+                                <action selector="cancelBtn:" destination="-1" eventType="touchUpInside" id="vQn-Nf-Iga"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Начало смены" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwQ-fe-ega">
+                            <rect key="frame" x="50" y="10" width="390" height="40"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="YDK-kW-m4E">
+                            <rect key="frame" x="10" y="60" width="480" height="220"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jaI-T2-6QO">
+                                    <rect key="frame" x="0.0" y="0.0" width="480" height="150"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="KIN-IL-UUx">
+                                            <rect key="frame" x="10" y="10" width="460" height="130"/>
+                                            <subviews>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Имя бариста..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aKy-xn-Cq6">
+                                                    <rect key="frame" x="0.0" y="0.0" width="460" height="60"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="60" id="3Af-mX-8HF"/>
+                                                    </constraints>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Пароль завидения..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eUu-Zf-YdA">
+                                                    <rect key="frame" x="0.0" y="70" width="460" height="60"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="KIN-IL-UUx" firstAttribute="leading" secondItem="jaI-T2-6QO" secondAttribute="leading" constant="10" id="Rc6-oA-xdu"/>
+                                        <constraint firstAttribute="trailing" secondItem="KIN-IL-UUx" secondAttribute="trailing" constant="10" id="ZHN-Yq-x0I"/>
+                                        <constraint firstAttribute="bottom" secondItem="KIN-IL-UUx" secondAttribute="bottom" constant="10" id="baE-aO-aqG"/>
+                                        <constraint firstItem="KIN-IL-UUx" firstAttribute="top" secondItem="jaI-T2-6QO" secondAttribute="top" constant="10" id="n7h-yj-dLO"/>
+                                    </constraints>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusV">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </view>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wWk-cp-EBu">
+                                    <rect key="frame" x="0.0" y="160" width="480" height="60"/>
+                                    <color key="backgroundColor" red="1" green="0.43529411759999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="60" id="C20-go-qWJ"/>
+                                    </constraints>
+                                    <state key="normal" title="НАЧАТЬ СМЕНУ">
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusV">
+                                            <real key="value" value="5"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.95999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="rKd-8N-KeE" firstAttribute="top" secondItem="aji-US-OaU" secondAttribute="top" id="2bJ-sL-uOe"/>
+                        <constraint firstItem="bwQ-fe-ega" firstAttribute="leading" secondItem="aji-US-OaU" secondAttribute="leading" constant="50" id="8Rv-Yy-boL"/>
+                        <constraint firstItem="YDK-kW-m4E" firstAttribute="top" secondItem="bwQ-fe-ega" secondAttribute="bottom" constant="10" id="Iuf-dN-AgG"/>
+                        <constraint firstAttribute="width" constant="500" id="YFC-DW-CNb"/>
+                        <constraint firstAttribute="trailing" secondItem="rKd-8N-KeE" secondAttribute="trailing" id="a9T-Kc-Nxy"/>
+                        <constraint firstItem="YDK-kW-m4E" firstAttribute="leading" secondItem="aji-US-OaU" secondAttribute="leading" constant="10" id="dhv-KA-fwt"/>
+                        <constraint firstItem="YDK-kW-m4E" firstAttribute="top" secondItem="rKd-8N-KeE" secondAttribute="bottom" id="o9p-3v-uXD"/>
+                        <constraint firstItem="rKd-8N-KeE" firstAttribute="leading" secondItem="bwQ-fe-ega" secondAttribute="trailing" id="r15-3U-ryA"/>
+                        <constraint firstAttribute="bottom" secondItem="YDK-kW-m4E" secondAttribute="bottom" constant="10" id="wcT-oJ-QPK"/>
+                        <constraint firstItem="bwQ-fe-ega" firstAttribute="top" secondItem="aji-US-OaU" secondAttribute="top" constant="10" id="y7d-hY-Jhm"/>
+                        <constraint firstAttribute="trailing" secondItem="YDK-kW-m4E" secondAttribute="trailing" constant="10" id="zxS-pj-Ab4"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadiusV">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.50214120370370374" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="aji-US-OaU" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="4ED-xP-riE"/>
+                <constraint firstItem="aji-US-OaU" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cvb-FM-hMj"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="-375.19999999999999" y="241.52923538230885"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cancel-music" width="96" height="96"/>
+    </resources>
+</document>

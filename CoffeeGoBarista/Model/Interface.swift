@@ -20,6 +20,12 @@ func cornerRatio(view : UIView, ratio : CGFloat, masksToBounds : Bool){
     }
 }
 
+func presentPopup(popupVC : UIViewController, mainVC : UIViewController){
+    popupVC.modalTransitionStyle = .crossDissolve
+    popupVC.modalPresentationStyle = .overFullScreen
+    mainVC.present(popupVC, animated: true, completion: nil)
+}
+
 func fadeView(view : UIView, delay: TimeInterval, isHiden: Bool) {
     
     let animationDuration = 0.25

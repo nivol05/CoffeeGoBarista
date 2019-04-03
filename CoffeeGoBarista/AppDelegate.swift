@@ -162,6 +162,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, MessagingDelegate, UNUser
 
     }
     
+    
+    
     static func dissableNotif(){
         app.unregisterForRemoteNotifications()
     }

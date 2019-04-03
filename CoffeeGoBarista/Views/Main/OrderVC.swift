@@ -186,7 +186,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
             switch response.result {
             case .success(let value):
                 print(value)
-                self.sortByTime(orders : setElementOrderList(list: value as! [[String : Any]]))
+                self.sortByTime(orders : setElementList(list: value as! [[String : Any]]))
                 self.collection.reloadData()
                 self.refresh.endRefreshing()
                 self.stopAnimating()

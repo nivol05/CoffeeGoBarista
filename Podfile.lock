@@ -51,6 +51,7 @@ PODS:
     - DynamicBlurView (~> 2.0)
   - Protobuf (3.5.0)
   - SeamlessSlideUpScrollView (2.0.1)
+  - Siren (3.4.3)
   - SQLite.swift (0.11.5):
     - SQLite.swift/standard (= 0.11.5)
   - SQLite.swift/standard (0.11.5)
@@ -76,6 +77,7 @@ DEPENDENCIES:
   - NVActivityIndicatorView
   - PopupDialog (~> 0.8.1)
   - SeamlessSlideUpScrollView
+  - Siren
   - SQLite.swift (~> 0.11.5)
   - SVProgressHUD
   - SwiftMessages
@@ -105,6 +107,7 @@ SPEC REPOS:
     - PopupDialog
     - Protobuf
     - SeamlessSlideUpScrollView
+    - Siren
     - SQLite.swift
     - SVProgressHUD
     - SwiftMessages
@@ -133,6 +136,7 @@ SPEC CHECKSUMS:
   PopupDialog: 3d4e8e0795c3a614f407d730986c9b9af9781123
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   SeamlessSlideUpScrollView: fe569043d844015107a58e0d8ea78b97bfa35d2d
+  Siren: e3cf1a93fa0fa73c03452107e95e5c10768d1d08
   SQLite.swift: 6e5356850bb1791459f8c16d6ee9195b28714a2e
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftMessages: 32ce3cfc8388b41aae56ff4853cc752a20101147
@@ -141,6 +145,6 @@ SPEC CHECKSUMS:
   Toast-Swift: ba0b01b095aada709d915f9beb1d38184a2721c3
   XLPagerTabStrip: c908b17cbf42fcd2598ee1adfc49bae25444d88a
 
-PODFILE CHECKSUM: 49f705edc66c6116cc8dbb39c664e863f17bfb83
+PODFILE CHECKSUM: 32ad8c7f07f8436575c1283009e269309ad9c215
 
 COCOAPODS: 1.5.3

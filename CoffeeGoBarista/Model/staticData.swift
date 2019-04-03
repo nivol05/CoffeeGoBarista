@@ -10,18 +10,19 @@ import Foundation
 import UIKit
 
 var current_coffee_spot : ElementCoffeeSpot!
-var menu : [ElementProduct]!
-var additionals : [[String: Any]] = [[String: Any]]()
-var syrups : [[String: Any]] = [[String: Any]]()
 var tabs : [Int]!
 var updateCashBoxList = true
 var notif = true
 
+let db = DBBarista()
+
 var orderVCVisible = false
+
+var openInventory = false
 
 func getProductsForType(type: Int) -> [ElementProduct]{
     var products = [ElementProduct]()
-    for product in menu{
+    for product in db.getProducts(){
         if product.product_type == type{
             products.append(product)
         }
@@ -56,23 +57,4 @@ func setLogin(login: String){
 func getLogin() -> String{
     let preferences = UserDefaults.standard
     return preferences.string(forKey: "user_login") ?? ""
-}
-
-func getCurrentDate() -> String{
-    let today = Date()
-    let formatter = DateFormatter()
-    formatter.dateFormat = "dd.MM.yyyy"
-    return formatter.string(from: today)
-}
-
-func isToday(date: String) -> Bool{
-    let checkingDate = getDate(dateString: date)
-    let today = getDate(dateString: getCurrentDate())
-    return checkingDate == today
-}
-
-func isBeforeToday(date: String) -> Bool{
-    let checkingDate = getDate(dateString: date)
-    let today = getDate(dateString: getCurrentDate())
-    return checkingDate <= today
 }

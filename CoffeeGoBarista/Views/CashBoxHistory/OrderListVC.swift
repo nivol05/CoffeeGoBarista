@@ -16,6 +16,10 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
     var order : ElementOrder!
     var orderItems : [ElementOrderItem]!
     
+    var menu: [ElementProduct]!
+    var syrups: [SyrupElem]!
+    var additionals: [AdditionalElem]!
+    
     var Id : Int!
     
     @IBOutlet weak var TFDate: UITextField!
@@ -28,6 +32,11 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        menu = db.getProducts()
+        syrups = db.getSyrups()
+        additionals = db.getAdds()
+        
         startAnimating(type : NVActivityIndicatorType.ballPulseSync)
         CommentBG.layer.cornerRadius = 10
         CommentBG.layer.masksToBounds = false
@@ -42,6 +51,10 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
         
         self.getOrder()
     
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override var prefersStatusBarHidden: Bool{
@@ -78,7 +91,7 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
         
         //CoffeeImag
         if element.img != nil{
-            cell?.ImgCoffee.kf.setImage(with: URL(string: element.img)!)
+            cell?.ImgCoffee.kf.setImage(with: URL(string: element.img!)!)
         } else{
             cell?.ImgCoffee.image = #imageLiteral(resourceName: "coffee-cup")
         }
@@ -118,9 +131,9 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
                 let value = syrupsInStr[i]
                 
                 for x in syrups{
-                    if value == x["name"] as! String{
-                        syrupsText.append(x["name"] as! String)
-                        syrupsText.append("( +\(x["price"] as! Int) грн)")
+                    if value == x.name{
+                        syrupsText.append(x.name)
+                        syrupsText.append("( +\(x.price) грн)")
                         break
                     }
                 }
@@ -142,9 +155,9 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
                 let value = addsInStr[i]
                 
                 for x in additionals{
-                    if value == x["name"] as! String{
-                        addsText.append(x["name"] as! String)
-                        addsText.append("( +\(x["price"] as! Int) грн)")
+                    if value == x.name{
+                        addsText.append(x.name)
+                        addsText.append("( +\(x.price) грн)")
                         break
                     }
                 }
@@ -210,7 +223,7 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
             switch response.result {
             case .success(let value):
                 print(value)
-                self.orderItems = setElementOrderItemList(list: value as! [[String : Any]])
+                self.orderItems = setElementList(list: value as! [[String : Any]])
                 self.stopAnimating()
                 self.tableView.delegate = self
                 self.tableView.dataSource = self

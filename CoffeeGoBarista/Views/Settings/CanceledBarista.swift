@@ -86,7 +86,7 @@ class CanceledBarista: UIViewController , UICollectionViewDelegate , UICollectio
         getOrdersCanceledBarista().responseJSON { (response) in
             switch response.result{
             case .success(let value):
-                self.orders = setElementOrderList(list: value as! [[String : Any]])
+                self.orders = setElementList(list: value as! [[String : Any]])
                 self.collectionView.reloadData()
                 self.stopAnimating()
                 break

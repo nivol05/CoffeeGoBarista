@@ -41,6 +41,41 @@ func getTime(minutes: Int) -> String{
     return orderTime
 }
 
+func getCurrentDate() -> String{
+    let today = Date()
+    let formatter = DateFormatter()
+    formatter.dateFormat = "dd.MM.yyyy"
+    return formatter.string(from: today)
+}
+
+func isToday(date: String) -> Bool{
+    let checkingDate = getDate(dateString: date)
+    let today = getDate(dateString: getCurrentDate())
+    return checkingDate == today
+}
+
+func isBeforeToday(date: String) -> Bool{
+    let checkingDate = getDate(dateString: date)
+    let today = getDate(dateString: getCurrentDate())
+    return checkingDate <= today
+}
+
+func isDateInRange(startDate: String, endDate: String, checkDate: String) -> Bool{
+    let startD = getDate(dateString: startDate)
+    let endD = getDate(dateString: endDate)
+    let checkD = getDate(dateString: checkDate)
+    return (startD <= checkD && endD >= checkD) || (startD >= checkD && endD <= checkD)
+}
+
+func isDateAndTimeInRange(startDate: String, endDate: String, checkDate: String, startTime: Int, endTime: Int, checkTime: Int) -> Bool{
+    let startD = getDate(dateString: startDate)
+    let endD = getDate(dateString: endDate)
+    let checkD = getDate(dateString: checkDate)
+    return (checkD == startD && checkTime >= startTime) ||
+    (checkD == endD && startD != endD && checkTime <= endTime) ||
+    (checkD >= startD && checkD <= endD && startD != endD)
+}
+
 func getDate(dateString: String) -> Date{
     let formatter = DateFormatter()
     formatter.dateFormat = "dd.MM.yyyy"
