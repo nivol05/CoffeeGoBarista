@@ -80,14 +80,10 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "OrderList", for: indexPath) as? OrderCell
         let orderItem = orderItems[indexPath.row]
+        
         let product_id = orderItem.product
-        var element : ElementProduct!
-        for i in menu{
-            if product_id == i.id{
-                element = i
-                break
-            }
-        }
+        print("mamky ebal \(menu)")
+        let element = menu.getItem(id: product_id!)!
         
         //CoffeeImag
         if element.img != nil{
@@ -224,10 +220,20 @@ class OrderListVC: UIViewController, UITableViewDataSource,UITableViewDelegate, 
             case .success(let value):
                 print(value)
                 self.orderItems = setElementList(list: value as! [[String : Any]])
-                self.stopAnimating()
-                self.tableView.delegate = self
-                self.tableView.dataSource = self
-                self.tableView.reloadData()
+                print(self.orderItems.count)
+                if self.orderItems.count > 0{
+                    self.stopAnimating()
+                    self.tableView.delegate = self
+                    self.tableView.dataSource = self
+                    self.tableView.reloadData()
+                } else {
+//                    let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+//                    let redViewController = mainStoryBoard.instantiateViewController(withIdentifier: "Order")
+//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                    appDelegate.window?.rootViewController = redViewController
+                }
+                
+                
                 break
             case .failure(let error):
                                 self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")

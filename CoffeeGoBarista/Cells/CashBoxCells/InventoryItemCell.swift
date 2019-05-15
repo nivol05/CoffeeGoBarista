@@ -13,6 +13,7 @@ class InventoryItemCell: UITableViewCell {
     @IBOutlet weak var typeLbl: UILabel!
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var countLbl: UILabel!
+    @IBOutlet weak var bg: UIView!
     
     @IBInspectable var selectionColor: UIColor = .gray {
         didSet {

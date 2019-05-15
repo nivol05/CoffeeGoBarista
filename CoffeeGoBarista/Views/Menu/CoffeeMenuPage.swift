@@ -110,24 +110,21 @@ class CoffeeMenuPage: UIViewController, IndicatorInfoProvider, UITableViewDelega
         
         let data = products[sender.tag]
         print("KNOPKa")
-        if data.active{
-            data.active = false
+            data.active.toggle()
             self.setStatusView(btn: sender , active: data.active)
-        } else {
-            data.active = true
-            self.setStatusView(btn: sender , active: data.active)
-        }
         
         patchProduct(productId: data.id, active: data.active).responseJSON{ (response) in
             
             switch response.result {
             case .success(let value):
                 print(value)
+                db.updateProduct(x: data, id: data.id)
                 print("succes")
-                
                 break
             case .failure(let error):
                 self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
+                data.active.toggle()
+                self.setStatusView(btn: sender , active: data.active)
                 self.stopAnimating()
                 print(error)
                 break

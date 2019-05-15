@@ -27,7 +27,14 @@ class StartVC: UIViewController, NVActivityIndicatorViewable {
     
     func checkUser(){
         if user != nil{
-            getToken(username: user!.username, password: user!.password)
+            if (getUserToken().isEmpty){
+                getToken(username: user!.username, password: user!.password)
+            } else {
+                header = [
+                    "Authorization": getUserToken()
+                ]
+                setTabs()
+            }
         } else{
             self.stopAnimating()
             self.performSegue(withIdentifier: "logibView", sender: self)
@@ -48,10 +55,12 @@ class StartVC: UIViewController, NVActivityIndicatorViewable {
                 let jsonData = JSON(value)
                 if jsonData["token"] == JSON.null{
                     print("zalupa")
+                    self.stopAnimating()
+                    self.performSegue(withIdentifier: "logibView", sender: self)
                 } else {
-                    let token = "Token \(jsonData["token"].string!)"
+                    setUserToken(login: jsonData["token"].string!)
                     header = [
-                        "Authorization": token
+                        "Authorization": getUserToken()
                     ]
                     self.check()
                 }
@@ -73,6 +82,9 @@ class StartVC: UIViewController, NVActivityIndicatorViewable {
                 let coffeeSpots = value as! [[String : Any]]
                 
                 if coffeeSpots.count == 0{
+                    self.stopAnimating()
+                 self.performSegue(withIdentifier: "logibView", sender: self)
+                    
                     print("zaloopa")
                 } else {
                     let spot = ElementCoffeeSpot(mas: coffeeSpots[0])
@@ -83,7 +95,10 @@ class StartVC: UIViewController, NVActivityIndicatorViewable {
                         self.performSegue(withIdentifier: "logibView", sender: self)
                         self.refreshBtn.isHidden = false
                     } else {
-                        current_coffee_spot = spot
+                        setSpotId(id: spot.id)
+                        setMaxOrderLimit(value: spot.max_order_limit)
+                        setOnlineEnabled(value: spot.coffee_go)
+                        setCashBoxEnabled(value: spot.cashbox)
                         self.downloadData()
                     }
                 }

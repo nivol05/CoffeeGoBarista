@@ -96,7 +96,7 @@ func checkBarista(username: String) -> DataRequest{
 }
 
 func patchSpotLimit(limit: String?, isClosed: Bool?) -> DataRequest{
-    let link = "\(COFFEE_SPOTS)\(current_coffee_spot.id!)/"
+    let link = "\(COFFEE_SPOTS)\(getSpotId())/"
     var toPatch = [String : Any]()
     if limit != nil{
         toPatch["max_order_limit"] = limit
@@ -154,7 +154,7 @@ func patchOrder(order: ElementOrder) -> DataRequest{
 }
 
 func getProductsForSpot() -> DataRequest{
-    let link = "\(PRODUCTS)?id=\(current_coffee_spot.id!)"
+    let link = "\(PRODUCTS)?id=\(getSpotId())"
     return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
 }
 
@@ -196,22 +196,22 @@ func getOrderById(orderId: Int) -> DataRequest{
 }
 
 func getOrdersListOne() -> DataRequest{
-    let link = "\(ORDERS)?list_1_coffee_spot_id=\(current_coffee_spot.id!)"
+    let link = "\(ORDERS)?list_1_coffee_spot_id=\(getSpotId())"
     return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
 }
 
 func getOrdersListTwo() -> DataRequest{
-    let link = "\(ORDERS)?list_2_coffee_spot_id=\(current_coffee_spot.id!)"
+    let link = "\(ORDERS)?list_2_coffee_spot_id=\(getSpotId())"
     return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
 }
 
 func getOrdersCanceledClient() -> DataRequest{
-    let link = "\(ORDERS)?list_3_coffee_spot_id=\(current_coffee_spot.id!)"
+    let link = "\(ORDERS)?list_3_coffee_spot_id=\(getSpotId())"
     return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
 }
 
 func getOrdersCanceledBarista() -> DataRequest{
-    let link = "\(ORDERS)?list_4_coffee_spot_id=\(current_coffee_spot.id!)"
+    let link = "\(ORDERS)?list_4_coffee_spot_id=\(getSpotId())"
     return Alamofire.request(link, method: .get , parameters: nil, encoding: URLEncoding(), headers : header)
 }
 

@@ -10,6 +10,13 @@ import UIKit
 
 class OfflineOrderListCell: UITableViewCell {
 
+    @IBOutlet weak var nameLbl: UILabel!
+    @IBOutlet weak var costLbl: UILabel!
+    @IBOutlet weak var countLbl: UILabel!
+    @IBOutlet weak var discountLbl: UILabel!
+    @IBOutlet weak var fullPriceLbl: UILabel!
+    @IBOutlet weak var cupLbl: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

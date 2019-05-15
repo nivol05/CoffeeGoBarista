@@ -11,8 +11,11 @@ import Alamofire
 import SwiftyJSON
 import NVActivityIndicatorView
 
-class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewDataSource , UICollectionViewDelegateFlowLayout ,NVActivityIndicatorViewable {
+class CashBoxVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,NVActivityIndicatorViewable {
     
+    
+    
+    @IBOutlet weak var changeListSC: UISegmentedControl!
     @IBOutlet weak var titile: UINavigationItem!
     @IBOutlet weak var collection: UICollectionView!
     @IBOutlet weak var DropView: UIView!
@@ -23,6 +26,7 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     @IBOutlet weak var emptyView: UIView!
     @IBOutlet weak var calendarBtn: UIButton!
     @IBOutlet weak var loadingActivity: UIActivityIndicatorView!
+    @IBOutlet weak var chooseDateBtn: UIButton!
     
     var refresh : UIRefreshControl!
     
@@ -32,11 +36,12 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     var minChoosed = false
     var maxChoosed = false
-    var changeCashBoxList = false
+    var isOnlineOrders : Bool!
     
     var allOrderCost = 0
     
     var orders : [ElementOrder]!
+    var ordersOffline: [OrderOffline]!
     let statuses = [
         "",
         "Подтвердить",
@@ -49,7 +54,7 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         refresh = UIRefreshControl()
         refresh.backgroundColor = UIColor.clear
         refresh.addTarget(self, action: #selector(CashBoxVC.refreshPage), for: UIControlEvents.valueChanged)
@@ -60,6 +65,19 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
         
         self.collection.register(UINib(nibName: "OfflineCashBoxCell", bundle: nil), forCellWithReuseIdentifier: "SecCell")
         
+        if isCashBoxEnabled(){
+            isOnlineOrders = false
+            chooseDateBtn.isHidden = true
+        } else {
+            isOnlineOrders = true
+            chooseDateBtn.isHidden = false
+        }
+        
+        if isCashBoxEnabled(){
+            changeListSC.isHidden = false
+        } else{
+            changeListSC.isHidden = true
+        }
         
 //        startAnimating(type : NVActivityIndicatorType.ballPulseSync)
         toolbar.sizeToFit()
@@ -68,6 +86,17 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        if isCashBoxEnabled(){
+            ordersOffline = db.getOrdersOffline()
+            ordersOffline.reverse()
+        }
+        self.orders = db.getOrdersOnline()
+        getOrders(filtered: false)
+        self.collection.dataSource = self
+        self.collection.delegate = self
+        self.collection.reloadData()
+        
         if updateCashBoxList{
             loading(activity: true)
             getOrders(filtered: true)
@@ -92,7 +121,7 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if changeCashBoxList{
+        if isOnlineOrders{
             if UIScreen.main.bounds.width < 1000{
                 return CGSize(width: UIScreen.main.bounds.width / 3 - 20 , height: 155)
             }
@@ -106,20 +135,24 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if orders.count == 0{
-            emptyView.isHidden = false
+        if isOnlineOrders{
+            if orders == nil || orders.count == 0{
+                emptyView.isHidden = false
+                return 0
+            }
+            return orders.count
+        } else {
+            if ordersOffline == nil || ordersOffline.count == 0{
+                emptyView.isHidden = false
+                return 0
+            }
+            return ordersOffline.count
         }
-        
-        if orders == nil{
-            emptyView.isHidden = false
-            return 0
-        }
-        return orders.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if changeCashBoxList{
+        if isOnlineOrders{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cashbox", for: indexPath) as! CashboxList
             let item = orders[indexPath.row]
             
@@ -131,7 +164,14 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
             cell.BtnStatus.setTitle("\(self.statuses[item.status])", for: UIControl.State())
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecCell", for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SecCell", for: indexPath) as! OfflineCashBoxCell
+            let item = ordersOffline[indexPath.row]
+            
+            cell.positionLbl.text = "\(ordersOffline.count - indexPath.row)"
+            cell.sumLbl.text = "Наличные: \(item.cash_payment!) грн"
+            cell.timelbl.text = "Карточка: \(item.card_payment!)"
+//                    cell.nameLbl.text = "\(order.username!)"
+            cell.dateLbl.text = item.order_time
             return cell
         }
         
@@ -139,36 +179,53 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if changeCashBoxList{
+        if isOnlineOrders{
             let Storyboard = UIStoryboard(name: "Main", bundle: nil)
             let cell = Storyboard.instantiateViewController(withIdentifier: "OrderPage") as! OrderListVC
             cell.Id = self.orders[indexPath.row].id
             self.navigationController?.pushViewController(cell, animated: true)
         } else {
-            presentPopup(popupVC: OffineOrderListVC(), mainVC: self)
+            let cell = OffineOrderListVC()
+            cell.setData(
+                order: self.ordersOffline[indexPath.row]
+            )
+            cell.orderIndex = "Заказ \(ordersOffline.count - indexPath.row)"
+            
+
+            presentPopup(popupVC: cell, mainVC: self)
         }
     }
     
-    func getAllOrderPrice(filtered: Bool){
+    func getAllOrderPrice(filtered: Bool = false){
         var allPrice = 0
-        for order in orders{
-            allPrice += order.full_price
-        }
-        if filtered{
-            titleLbl.text = "Выбранные заказы (\(orders.count)) на сумму: \(allPrice) грн"
-        } else{
-            titleLbl.text = "Все заказы (\(orders.count)) на сумму: \(allPrice) грн"
+        if isOnlineOrders{
+            for order in orders{
+                allPrice += order.full_price
+            }
+            if filtered{
+                titleLbl.text = "Заказы (\(orders.count)) на сумму: \(allPrice) грн"
+            } else{
+                titleLbl.text = "Заказы (\(orders.count)) на сумму: \(allPrice) грн"
+            }
+        } else {
+            for order in ordersOffline{
+                allPrice += order.full_price
+            }
+            titleLbl.text = "Заказы (\(ordersOffline.count)) на сумму: \(allPrice) грн"
         }
     }
     
     func getOrders(filtered : Bool){
         print("TYTA I")
+        
         getOrdersListTwo().responseJSON { (response) in
             
             switch response.result {
             case .success(let value):
                 print(value)
                 self.orders = setElementList(list: value as! [[String : Any]])
+                db.delOrdersOnline()
+                db.setOrdersOnline(elems: self.orders)
                 if self.orders.count == 0{
                     self.emptyView.isHidden = false
                 } else {
@@ -193,32 +250,30 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
                         
                         self.orders = filteredOrders
                         self.getAllOrderPrice(filtered: true)
-                        self.collection.reloadData()
                     }
                 } else{
                     self.getAllOrderPrice(filtered: false)
                 }
                 
                self.refresh.endRefreshing()
-                self.collection.dataSource = self
-                self.collection.delegate = self
 //                self.getAllOrderPrice()
                 self.loading(activity: false)
+                self.collection.dataSource = self
+                self.collection.delegate = self
+                self.collection.reloadData()
                 self.stopAnimating()
                 break
             case .failure(let error):
                 
                 self.view.makeToast("Произошла ошибка загрузки, попробуйте еще раз")
                 self.refresh.endRefreshing()
-                self.emptyView.isHidden = false
+//                self.emptyView.isHidden = false
                 self.loading(activity: false)
                 self.stopAnimating()
                 print(error)
                 break
             }
         }
-        
-        
     }
     
     
@@ -309,17 +364,30 @@ class CashBoxVC: UIViewController , UICollectionViewDelegate , UICollectionViewD
     
     @IBAction func refreshBtn(_ sender: Any) {
         loading(activity: true)
-        getOrders(filtered: false)
+        getOrders(filtered: true)
     }
     
-    @IBAction func changeCashBoxList(_ sender: Any) {
-        if changeCashBoxList{
+    
+    @IBAction func changeListSC(_ sender: Any) {
+        emptyView.isHidden = true
+        let getIndex = changeListSC.selectedSegmentIndex
+        print(getIndex)
+        switch (getIndex) {
+        case 0:
+            isOnlineOrders.toggle()
+            chooseDateBtn.isHidden.toggle()
             collection.reloadData()
-            changeCashBoxList.toggle()
-        } else {
+            UIView.animate(withDuration: 0.1, animations: {
+                self.DropView.isHidden = true
+            })
+        case 1:
+            isOnlineOrders.toggle()
+            chooseDateBtn.isHidden.toggle()
             collection.reloadData()
-            changeCashBoxList.toggle()
+            
+        default: break
         }
+        getAllOrderPrice()
     }
     
     

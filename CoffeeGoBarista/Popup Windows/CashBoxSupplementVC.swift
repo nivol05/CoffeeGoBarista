@@ -10,10 +10,22 @@ import UIKit
 
 class CashBoxSupplementVC: UIViewController {
 
+    @IBOutlet weak var checkMarkView: UIView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if isInventoryInProcess(){
+            checkMarkView.isHidden = false
+        } else {
+            checkMarkView.isHidden = true
+        }
+        
     }
     
     
@@ -23,11 +35,15 @@ class CashBoxSupplementVC: UIViewController {
     }
     @IBAction func supplyBtn(_ sender: Any) {
 //        openInventory = true
-        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "nav")
         
+        inventoryType = InventoryType.Income
+        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "nav")
         present(viewController, animated: true, completion: nil)
         
-        
+    }
+    
+    @IBAction func endOfShiftBtn(_ sender: Any) {
+        presentPopup(popupVC: EndOfShiftVC(), mainVC: self)
     }
     
     @IBAction func closeBtn(_ sender: Any) {
@@ -36,15 +52,21 @@ class CashBoxSupplementVC: UIViewController {
     
     @IBAction func inventoryBtn(_ sender: Any) {
         
+        inventoryType = InventoryType.Inventorization
+        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "nav")
+        
+        present(viewController, animated: true, completion: nil)
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func synchronizationBtn(_ sender: Any) {
+        
     }
-    */
-
+    
+    @IBAction func productOutcomeBtn(_ sender: Any) {
+        inventoryType = InventoryType.ProductOutcome
+        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "nav")
+        
+        present(viewController, animated: true, completion: nil)
+    }
+    
 }

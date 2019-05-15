@@ -75,7 +75,7 @@ class LoadUtils{
     }
     
     private func getAdds(){
-        getAdditionalsForSpot(spotId: "\(current_coffee_spot.id!)").responseJSON { (response) in
+        getAdditionalsForSpot(spotId: "\(getSpotId())").responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.addsList = setElementList(list: value as! [[String : Any]])
@@ -91,7 +91,7 @@ class LoadUtils{
     }
     
     private func getSyrups(){
-        getSyrupsForSpot(spotId: "\(current_coffee_spot.id!)").responseJSON { (response) in
+        getSyrupsForSpot(spotId: "\(getSpotId())").responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.syrupsList = setElementList(list: value as! [[String : Any]])
@@ -107,7 +107,7 @@ class LoadUtils{
     }
     
     private func getCupList(){
-        getCups(spotId: current_coffee_spot.id!).responseJSON { (response) in
+        getCups(spotId: getSpotId()).responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.cupsList = setElementList(list: value as! [[String : Any]])
@@ -123,7 +123,7 @@ class LoadUtils{
     }
     
     private func getDiscountList(){
-        getDiscounts(spotId: current_coffee_spot.id!).responseJSON { (response) in
+        getDiscounts(spotId: getSpotId()).responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.discountList = setElementList(list: value as! [[String : Any]])
@@ -139,7 +139,7 @@ class LoadUtils{
     }
     
     private func getStorageItemsList(){
-        getStorageItems(spotId: current_coffee_spot.id!).responseJSON { (response) in
+        getStorageItems(spotId: getSpotId()).responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.storageItems = setElementList(list: value as! [[String : Any]])
@@ -155,7 +155,7 @@ class LoadUtils{
     }
     
     private func getStorageItemsTypesList(){
-        getStorageItemsProductType(spotId: current_coffee_spot.id!).responseJSON { (response) in
+        getStorageItemsProductType(spotId: getSpotId()).responseJSON { (response) in
             switch response.result {
             case .success(let value):
                 self.storageItemsType = setElementList(list: value as! [[String : Any]])

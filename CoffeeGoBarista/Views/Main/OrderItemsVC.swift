@@ -313,7 +313,7 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
             case .success(let value):
                 print(value)
                 self.orderItems = setElementList(list: value as! [[String : Any]])
-            
+                
                 self.tableView.delegate = self
                 self.tableView.dataSource = self
                 self.tableView.reloadData()
@@ -395,6 +395,19 @@ class OrderItemsVC: UIViewController, UITableViewDelegate,UITableViewDataSource,
     }
     
     func putNewOrder(order : ElementOrder, status : Int){
+        
+        if isCashBoxEnabled() && status == 3{
+            let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let cell = Storyboard.instantiateViewController(withIdentifier: "confirmOrderVC") as! ConfirmOrderVC
+            self.navigationController?.pushViewController(cell, animated: true)
+            cell.setOnlineData(order: order, maxValue: order.full_price, success: {
+                let mainStoryBoard = UIStoryboard(name: "Main", bundle: nil)
+                let redViewController = mainStoryBoard.instantiateViewController(withIdentifier: "Bar")
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = redViewController
+            })
+            return
+        }
         
         if order.status == 6{
             order.canceled_barista_message = reasonCOWTF.text!

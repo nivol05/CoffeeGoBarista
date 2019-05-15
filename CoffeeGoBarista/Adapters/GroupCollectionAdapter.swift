@@ -35,6 +35,8 @@ class GroupCollectionAdapter: NSObject, UICollectionViewDelegate , UICollectionV
             cell.itemImage.image = #imageLiteral(resourceName: "coffee-cup")
         }
         
+        cell.itemLbl.text = ""
+        
         switch item.type {
         case 1:
             cell.itemNameLbl.text = "Кофе"
@@ -59,6 +61,9 @@ class GroupCollectionAdapter: NSObject, UICollectionViewDelegate , UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        cashBoxVC.goHomeBtn.isHidden = false
+//        fadeView(view: cashBoxVC.goHomeBtn, delay: 0.2, isHiden: false)
         cashBoxVC.setProducts(type: list![indexPath.row].type)
     }
 }

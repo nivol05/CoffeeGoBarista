@@ -24,7 +24,7 @@ class OrderLimitVC: UIViewController, NVActivityIndicatorViewable {
     
         views()
         
-        self.limitLbl.text = "\(limitStart) \(current_coffee_spot.max_order_limit!) грн"
+        self.limitLbl.text = "\(limitStart) \(getMaxOrderLimit()) грн"
     }
     
     override var prefersStatusBarHidden: Bool{
@@ -56,7 +56,7 @@ class OrderLimitVC: UIViewController, NVActivityIndicatorViewable {
             switch response.result{
             case .success(let value):
                 print(value)
-                current_coffee_spot.max_order_limit = limit
+                setMaxOrderLimit(value: limit)
                 self.view.makeToast("Лимит успешно изменен")
                 self.stopAnimating()
                 self.dismiss(animated: true, completion: nil)

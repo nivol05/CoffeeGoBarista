@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -30,6 +30,13 @@
             <rect key="frame" x="0.0" y="0.0" width="577" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUL-A1-IjJ">
+                    <rect key="frame" x="0.0" y="20" width="577" height="647"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="cancelBtn:" destination="-1" eventType="touchUpInside" id="Ws2-KY-nIy"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tRD-au-mjv">
                     <rect key="frame" x="33.5" y="188.5" width="510" height="290.5"/>
                     <subviews>
@@ -200,6 +207,10 @@
             <constraints>
                 <constraint firstItem="tRD-au-mjv" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="M3H-cj-Yjh"/>
                 <constraint firstItem="tRD-au-mjv" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="NEM-Nq-pBQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="UUL-A1-IjJ" secondAttribute="trailing" id="NYg-tv-th8"/>
+                <constraint firstAttribute="bottom" secondItem="UUL-A1-IjJ" secondAttribute="bottom" id="cxD-5F-967"/>
+                <constraint firstItem="UUL-A1-IjJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ee9-Rg-MbD"/>
+                <constraint firstItem="UUL-A1-IjJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="lVp-He-0zP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
@@ -207,7 +218,7 @@
         </view>
     </objects>
     <resources>
-        <image name="cancel-music" width="96" height="96"/>
-        <image name="coffee-cup" width="70.866142272949219" height="70.866142272949219"/>
+        <image name="cancel-music" width="120" height="120"/>
+        <image name="coffee-cup" width="250" height="250"/>
     </resources>
 </document>

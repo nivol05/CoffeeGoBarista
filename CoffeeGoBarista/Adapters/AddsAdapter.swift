@@ -19,7 +19,7 @@ class AddsAdapter: NSObject, UICollectionViewDelegate , UICollectionViewDataSour
         self.cashBoxVC = cashBoxVC
         self.list = list
         searchList = list
-    }
+        }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return searchList?.count ?? 0
@@ -28,7 +28,9 @@ class AddsAdapter: NSObject, UICollectionViewDelegate , UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuItem", for: indexPath) as! MenuItemCell
         cell.itemNameLbl.text = searchList[indexPath.row].name
-        
+        cell.itemLbl.text = "Добавка"
+        cell.itemImage.image = nil
+        cell.itemLbl.isHidden = false
         //        cell.itemImage.kf.setImage()
         return cell
     }

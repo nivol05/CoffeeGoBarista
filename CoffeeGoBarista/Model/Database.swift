@@ -144,12 +144,10 @@ class DBBarista{
             table.column(self.FULL_PRICE)
             table.column(self.DATE)
             table.column(self.ORDER_TIME)
+            table.column(self.STATUS)
             table.column(self.USERNAME)
             table.column(self.CASH_PAYMENT)
             table.column(self.CARD_PAYMENT)
-            table.column(self.IS_POSTED)
-            table.column(self.LIST_POS)
-            table.column(self.DISCOUNT)
         }
         
         do{
@@ -173,7 +171,6 @@ class DBBarista{
             table.column(self.COUNT)
             table.column(self.IS_POSTED)
             table.column(self.TIME)
-            table.column(self.LIST_POS)
         }
         
         do{
@@ -623,7 +620,7 @@ class DBBarista{
                         self.ID <- x.id,
                         self.NAME <- x.name,
                         self.PRICE <- x.price,
-                        self.ACTIVE <- x.active.hashValue
+                        self.ACTIVE <- x.active!.getInt()
                     )
                     
                     do{
@@ -692,7 +689,7 @@ class DBBarista{
                         self.ID <- x.id,
                         self.NAME <- x.name,
                         self.PRICE <- x.price,
-                        self.ACTIVE <- x.active.hashValue
+                        self.ACTIVE <- x.active!.getInt()
                     )
                     
                     do{
@@ -834,7 +831,7 @@ class DBBarista{
                         self.L_CUP <- x.l_cup,
                         self.M_CUP <- x.m_cup,
                         self.B_CUP <- x.b_cup,
-                        self.ACTIVE <- x.active.hashValue,
+                        self.ACTIVE <- x.active.getInt(),
                         self.CUPS <- StringUtils.getString(mas: x.cups!)
                     )
                     
@@ -845,6 +842,37 @@ class DBBarista{
                         print(error)
                         print("Not inserted")
                     }
+                }
+            }
+        } catch{
+            print("Database \(error)")
+        }
+    }
+    
+    func updateProduct(x: ElementProduct, id: Int){
+        createTableProduct()
+        do{
+            try database.transaction{
+                let insert = self.TABLE_PRODUCTS.filter(ID == id).update(
+                    self.ID <- x.id,
+                    self.NAME <- x.name,
+                    self.PRODUCT_TYPE <- x.product_type,
+                    self.IMG <- x.img,
+                    self.PRODUCT_TYPE <- x.product_type,
+                    self.PRICE <- x.price,
+                    self.L_CUP <- x.l_cup,
+                    self.M_CUP <- x.m_cup,
+                    self.B_CUP <- x.b_cup,
+                    self.ACTIVE <- x.active.getInt(),
+                    self.CUPS <- StringUtils.getString(mas: x.cups!)
+                )
+                
+                do{
+                    try self.database.run(insert)
+                    print("Inserted")
+                } catch{
+                    print(error)
+                    print("Not inserted")
                 }
             }
         } catch{
@@ -1113,7 +1141,6 @@ class DBBarista{
             try database.transaction{
                 let insert = self.TABLE_OUTCOME.insert(
                     self.ID <- x.id,
-                    self.SPOT_ID <- x.spot,
                     self.INCOME_ID <- x.income,
                     self.PRICE <- x.price,
                     self.DATE <- x.date,
@@ -1140,7 +1167,6 @@ class DBBarista{
             try database.transaction{
                 let insert = self.TABLE_OUTCOME.filter(ID == lastId).update(
                     self.ID <- x.id,
-                    self.SPOT_ID <- x.spot,
                     self.INCOME_ID <- x.income,
                     self.PRICE <- x.price,
                     self.DATE <- x.date,
@@ -1168,7 +1194,6 @@ class DBBarista{
             try database.transaction{
                 let select = TABLE_OUTCOME.select([
                     ID,
-                    SPOT_ID,
                     INCOME_ID,
                     PRICE,
                     DATE,
@@ -1182,7 +1207,7 @@ class DBBarista{
                         
                         response.append(OutcomeElem(
                             id: item[self.ID],
-                            spot : item[self.SPOT_ID] ,
+                            spot : getSpotId(),
                             income : item[self.INCOME_ID] ,
                             price : item[self.PRICE],
                             date : item[self.DATE] ,
@@ -1194,7 +1219,6 @@ class DBBarista{
                 } catch{
                     print(error)
                 }
-                
             }
         } catch{
             print("Database \(error)")
@@ -1231,8 +1255,7 @@ class DBBarista{
                     self.SPOT_ID <- x.spot,
                     self.VALUE <- x.value,
                     self.DATE <- x.date,
-                    self.TIME <- x.time,
-                    self.BARISTA_NAME <- x.barista_name
+                    self.TIME <- x.time
                 )
                 
                 do{
@@ -1258,8 +1281,7 @@ class DBBarista{
                     SPOT_ID,
                     VALUE,
                     DATE,
-                    TIME,
-                    BARISTA_NAME
+                    TIME
                     ])
                 
                 do{
@@ -1272,7 +1294,7 @@ class DBBarista{
                             value : item[self.VALUE] ,
                             date : item[self.DATE] ,
                             time : item[self.TIME],
-                            barista_name : item[self.BARISTA_NAME]
+                            barista_name : getBaristaName()
                         ))
                         
                     }
@@ -1290,7 +1312,7 @@ class DBBarista{
     
     //ORderItemsOffline
     func delItemsOffline() {
-        let del = self.TABLE_ITEMS_OFFLINE.delete()
+        let del = self.TABLE_ITEMS_OFFLINE.drop(ifExists: true)
         do{
             try database.run(del)
         } catch {
@@ -1323,7 +1345,7 @@ class DBBarista{
                         self.DISCOUNT <- x.discount,
                         self.COUNT <- x.count,
                         self.CUP <- x.cup,
-                        self.IS_POSTED <- x.is_posted.hashValue,
+                        self.IS_POSTED <- x.is_posted.getInt(),
                         self.TIME <- x.time
                     )
                     
@@ -1354,7 +1376,7 @@ class DBBarista{
                     self.DISCOUNT <- x.discount,
                     self.COUNT <- x.count,
                     self.CUP <- x.cup,
-                    self.IS_POSTED <- x.is_posted.hashValue,
+                    self.IS_POSTED <- x.is_posted.getInt(),
                     self.TIME <- x.time
                 )
                 
@@ -1423,7 +1445,7 @@ class DBBarista{
         var response = [OrderItemOfflineElem]()
         do{
             try database.transaction{
-                let select = TABLE_ITEMS_OFFLINE.filter(ORDER_ID == id).select([
+                let select = TABLE_ITEMS_OFFLINE.select([
                     ID,
                     ORDER_ID,
                     PRODUCT_ID,
@@ -1463,7 +1485,7 @@ class DBBarista{
             print("Database \(error)")
         }
         
-        return response
+        return response.filter({$0.order == id})
     }
     
     func getItemsOfflineNotPosted() -> [OrderItemOfflineElem]{
@@ -1540,7 +1562,6 @@ class DBBarista{
                
                 let insert = self.TABLE_SHIFTS.insert(
                     self.ID <- x.id,
-                    self.SPOT_ID <- x.spot,
                     self.BARISTA_NAME <- x.barista_name,
                     self.DATE_START <- x.date_start,
                     self.DATE_FINISH <- x.date_finish,
@@ -1568,9 +1589,8 @@ class DBBarista{
         var response = [ShiftElem]()
         do{
             try database.transaction{
-                let select = TABLE_ITEMS_OFFLINE.select([
+                let select = TABLE_SHIFTS.select([
                     ID,
-                    SPOT_ID,
                     BARISTA_NAME,
                     DATE_START,
                     DATE_FINISH,
@@ -1586,7 +1606,7 @@ class DBBarista{
                         
                         response.append(ShiftElem(
                             id: item[self.ID],
-                            spot : item[self.SPOT_ID] ,
+                            spot : getSpotId() ,
                             barista_name : item[self.BARISTA_NAME] ,
                             date_start : item[self.DATE_START] ,
                             date_finish : item[self.DATE_FINISH],
@@ -1612,7 +1632,7 @@ class DBBarista{
     //OrdersOnline
     
     func delOrdersOnline() {
-        let del = self.TABLE_ORDERS_ONLINE.delete()
+        let del = self.TABLE_ORDERS_ONLINE.drop(ifExists: true)
         do{
             try database.run(del)
         } catch {
@@ -1637,8 +1657,7 @@ class DBBarista{
                     self.STATUS <- x.status,
                     self.CASH_PAYMENT <- x.cash_payment,
                     self.CARD_PAYMENT <- x.card_payment,
-                    self.DISCOUNT <- x.discount,
-                    self.TAKEAWAY <- x.takeaway.hashValue,
+                    self.TAKEAWAY <- x.takeaway.getInt(),
                     self.COMMENT <- x.comment
                 )
                 
@@ -1673,8 +1692,7 @@ class DBBarista{
                         self.STATUS <- x.status,
                         self.CASH_PAYMENT <- x.cash_payment,
                         self.CARD_PAYMENT <- x.card_payment,
-                        self.DISCOUNT <- x.discount,
-                        self.TAKEAWAY <- x.takeaway.hashValue,
+                        self.TAKEAWAY <- x.takeaway.getInt(),
                         self.COMMENT <- x.comment
                     )
                     
@@ -1706,7 +1724,6 @@ class DBBarista{
                     STATUS,
                     CASH_PAYMENT,
                     CARD_PAYMENT,
-                    DISCOUNT,
                     COMMENT,
                     TAKEAWAY
                     ])
@@ -1724,7 +1741,6 @@ class DBBarista{
                             "status" : item[self.STATUS],
                             "cash_payment" : item[self.CASH_PAYMENT],
                             "card_payment" : item[self.CARD_PAYMENT],
-                            "discount" : item[self.DISCOUNT],
                             "takeaway" : item[self.TAKEAWAY] == 1,
                             "comment" : item[self.COMMENT]
                         ]))
@@ -1755,7 +1771,6 @@ class DBBarista{
                     STATUS,
                     CASH_PAYMENT,
                     CARD_PAYMENT,
-                    DISCOUNT,
                     COMMENT,
                     TAKEAWAY
                     ])
@@ -1774,7 +1789,6 @@ class DBBarista{
                                 "status" : item[self.STATUS],
                                 "cash_payment" : item[self.CASH_PAYMENT],
                                 "card_payment" : item[self.CARD_PAYMENT],
-                                "discount" : item[self.DISCOUNT],
                                 "takeaway" : item[self.TAKEAWAY] == 1,
                                 "comment" : item[self.COMMENT]
                                 ]))
@@ -1805,7 +1819,6 @@ class DBBarista{
                     STATUS,
                     CASH_PAYMENT,
                     CARD_PAYMENT,
-                    DISCOUNT,
                     COMMENT,
                     TAKEAWAY
                     ])
@@ -1830,7 +1843,6 @@ class DBBarista{
                                 "status" : item[self.STATUS],
                                 "cash_payment" : item[self.CASH_PAYMENT],
                                 "card_payment" : item[self.CARD_PAYMENT],
-                                "discount" : item[self.DISCOUNT],
                                 "takeaway" : item[self.TAKEAWAY] == 1,
                                 "comment" : item[self.COMMENT]
                                 ]))
@@ -1850,7 +1862,7 @@ class DBBarista{
     
     //OrdersOffline
     func delOrdersOffline() {
-        let del = self.TABLE_ORDERS_OFFLINE.delete()
+        let del = self.TABLE_ORDERS_OFFLINE.drop(ifExists: true)
         do{
             try database.run(del)
         } catch {
@@ -1882,11 +1894,10 @@ class DBBarista{
                     self.FULL_PRICE <- x.full_price,
                     self.DATE <- x.date,
                     self.ORDER_TIME <- x.order_time,
-                    self.STATUS <- x.status,
                     self.CASH_PAYMENT <- x.cash_payment,
                     self.CARD_PAYMENT <- x.card_payment,
                     self.DISCOUNT <- x.discount,
-                    self.IS_POSTED <- x.is_posted.hashValue,
+                    self.IS_POSTED <- x.is_posted.getInt(),
                     self.LIST_POS <- x.list_pos
                 )
                 
@@ -1916,11 +1927,10 @@ class DBBarista{
                     self.FULL_PRICE <- x.full_price,
                     self.DATE <- x.date,
                     self.ORDER_TIME <- x.order_time,
-                    self.STATUS <- x.status,
                     self.CASH_PAYMENT <- x.cash_payment,
                     self.CARD_PAYMENT <- x.card_payment,
                     self.DISCOUNT <- x.discount,
-                    self.IS_POSTED <- x.is_posted.hashValue,
+                    self.IS_POSTED <- x.is_posted.getInt(),
                     self.LIST_POS <- x.list_pos
                 )
                 
@@ -1950,7 +1960,6 @@ class DBBarista{
                     FULL_PRICE,
                     DATE,
                     ORDER_TIME,
-                    STATUS,
                     CASH_PAYMENT,
                     CARD_PAYMENT,
                     DISCOUNT,
@@ -1970,7 +1979,7 @@ class DBBarista{
                             full_price : item[self.FULL_PRICE],
                             date : item[self.DATE],
                             order_time : item[self.ORDER_TIME],
-                            status : item[self.STATUS],
+                            status : 3,
                             cash_payment : item[self.CASH_PAYMENT],
                             card_payment : item[self.CARD_PAYMENT],
                             discount : item[self.DISCOUNT],

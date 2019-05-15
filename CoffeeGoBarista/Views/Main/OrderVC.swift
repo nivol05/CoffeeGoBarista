@@ -71,7 +71,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
         AppDelegate.enableNotif()
         
             
-            startAnimating(type : NVActivityIndicatorType.ballPulseSync)
+//            startAnimating(type : NVActivityIndicatorType.ballPulseSync)
             OrderVC.isChangingStatus = true
 
         self.collection.dataSource = self
@@ -260,7 +260,7 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     }
     
     func checkOrder(order : ElementOrder, status : Int , sender:UIButton){
-        startAnimating(type : NVActivityIndicatorType.ballPulseSync)
+//        startAnimating(type : NVActivityIndicatorType.ballPulseSync)
         
         getOrderById(orderId: order.id).responseJSON { (response) in
             switch response.result {
@@ -291,6 +291,17 @@ class OrderVC: UIViewController, UICollectionViewDelegate , UICollectionViewData
     }
     
     func putNewOrder(order : ElementOrder, status : Int , sender:UIButton){
+        
+        if isCashBoxEnabled() && status == 3{
+            stopAnimating()
+            let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let cell = Storyboard.instantiateViewController(withIdentifier: "confirmOrderVC") as! ConfirmOrderVC
+            self.navigationController?.pushViewController(cell, animated: true)
+            cell.setOnlineData(order: order, maxValue: order.full_price, success: {
+                self.orders.remove(at: sender.tag)
+            })
+            return
+        }
         
         if order.status == 6{
             order.canceled_barista_message = reasonCOWTF.text!

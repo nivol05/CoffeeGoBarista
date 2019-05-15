@@ -30,6 +30,7 @@ class ProductsCashAdapter: NSObject, UICollectionViewDelegate , UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuItem", for: indexPath) as! MenuItemCell
         let product = searchList[indexPath.row]
         cell.itemNameLbl.text = product.name
+        cell.itemLbl.text = ""
         
         if product.img != nil{
             cell.itemImage.kf.setImage(with: URL(string: product.img!)!)
@@ -85,12 +86,13 @@ class ProductsCashAdapter: NSObject, UICollectionViewDelegate , UICollectionView
                     print("DEFAULT")
                 }
             }
-            if (cup <= product.cups!.count){
+            if (cup <= product.cups!.count && product.cups!.count != 0){
                 let cupSize = getCupSize(id: product.cups![cup])
                 if (!cupSize.isEmpty){
                     size = "\(cupSize) мл"
                 }
             }
+            
             selections.append(CupSelectElem(size: size,
                                             price: price!,
                                             action: {

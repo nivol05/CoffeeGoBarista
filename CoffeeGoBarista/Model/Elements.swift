@@ -418,6 +418,11 @@ class StorageItemType {
     var id : Int
     var name : String
     
+    init(id: Int, name: String){
+        self.id = id
+        self.name = name
+    }
+    
     init(mas: [String : Any]) {
         id = mas["id"] as! Int
         name = mas["name"] as! String
@@ -429,6 +434,7 @@ class AdditionalElem {
     var name : String
     var price : Int
     var active : Bool?
+    
     
     init(mas: [String : Any]) {
         id = mas["id"] as! Int
@@ -782,12 +788,16 @@ class ElementCoffeeSpot{
     var id : Int!
     var company : Int!
     var max_order_limit : String!
+    var cashbox: Bool!
+    var coffee_go: Bool!
     var is_closed : Bool!
     
     init(mas: [String : Any]) {
         id = mas["id"] as? Int
         company = mas["name"] as? Int
         max_order_limit = mas["max_order_limit"] as? String
+        cashbox = mas["cashbox"] as? Bool
+        coffee_go = mas["coffee_go"] as? Bool
         is_closed = mas["is_closed"] as? Bool
     }
     

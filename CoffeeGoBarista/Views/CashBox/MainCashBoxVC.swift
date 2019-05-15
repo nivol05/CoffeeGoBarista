@@ -17,6 +17,7 @@ import PopupDialog
 class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource, NVActivityIndicatorViewable , UICollectionViewDelegateFlowLayout {
     
     
+    @IBOutlet weak var checkMarkView: UIView!
     
     @IBOutlet weak var goHomeBtn: UIButton!
     @IBOutlet weak var searchBarBG: UIView!
@@ -25,12 +26,15 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     @IBOutlet weak var confirmBtn: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var collectionView: UICollectionView!
-
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     @IBOutlet weak var syrupBtn: UIButton!
     @IBOutlet weak var additionalsBtn: UIButton!
     @IBOutlet weak var sumLbl: UILabel!
     @IBOutlet weak var discoundLbl: UILabel!
     @IBOutlet weak var paymentLbl: UILabel!
+    
+    @IBOutlet weak var titleLbl: UILabel!
     
     var orderItems = [CashOrderItem]()
     
@@ -45,13 +49,18 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
+//        presentPopup(popupVC: StartCaseShift(), mainVC: self)
         style()
         stopAnimating()
         setGroups()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
+        getTitleCurrentCash()
+        
+       
+        
         if openInventory{
             
             print("HER")
@@ -68,6 +77,12 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     
     override func viewWillAppear(_ animated: Bool) {
         
+        if isInventoryInProcess(){
+            checkMarkView.isHidden = false
+        } else {
+            checkMarkView.isHidden = true
+        }
+        
          self.navigationController?.isNavigationBarHidden = true
         super.viewWillAppear(animated)
         self.setNeedsStatusBarAppearanceUpdate()
@@ -75,6 +90,8 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
     }
+    
+    
     
     func style(){
 //        cornerRatio(view: goHomeBtn, ratio: 8, masksToBounds: false)
@@ -109,7 +126,6 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let cell = EditElementVC()
         cell.cashBoxVC = self
         cell.discountList = discountList
@@ -257,6 +273,15 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
         }
     }
     
+    func getTitleCurrentCash(){
+//        let shift = db.getShifts().first!
+//        let offlineOrders = db.getOrdersOffline()
+//        let onlineOrdersForShift = db.getOrdersOnlineForShift(startDate: shift.date_start, endDate: getCurrentDate(), shiftStartTime: toMins(time: shift.time_start) )
+//
+//        print("DA \(offlineOrders)")
+//        print("DS \(onlineOrdersForShift)")
+    }
+    
     @IBAction func inventoryBtn(_ sender: Any) {
         presentPopup(popupVC: CashBoxSupplementVC(), mainVC: self)
     }
@@ -276,6 +301,7 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     
     
     @IBAction func additionalBtn(_ sender: Any) {
+        goHomeBtn.isHidden = false
         if (addsAdapter == nil){
             addsAdapter = AddsAdapter()
             addsAdapter?.setData(cashBoxVC: self, list: db.getAdds())
@@ -289,6 +315,7 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     }
     
     @IBAction func syrypsBtn(_ sender: Any) {
+        goHomeBtn.isHidden = false
         if (syrupAdapter == nil){
             syrupAdapter = SyrupAdapter()
             syrupAdapter?.setData(cashBoxVC: self, list: db.getSyrups())
@@ -302,19 +329,25 @@ class MainCashBoxVC: UIViewController,UITableViewDelegate,UITableViewDataSource,
     }
     
     @IBAction func setGroupsAction(_ sender: Any) {
+        goHomeBtn.isHidden = true
+//        fadeView(view: goHomeBtn, delay: 0, isHiden: true)
         setGroups()
     }
     
     @IBAction func confirmOrder(_ sender: Any) {
         
-        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let cell = Storyboard.instantiateViewController(withIdentifier: "confirmOrderVC") as! ConfirmOrderVC
-        self.navigationController?.pushViewController(cell, animated: true)
-        cell.setData(price: getSummaryPrice(),
-                     success: {
-                        self.orderItems.removeAll()
-        })
-        
+        if orderItems.count == 0{
+            self.view.makeToast("Заказ пуст")
+        } else{
+            let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let cell = Storyboard.instantiateViewController(withIdentifier: "confirmOrderVC") as! ConfirmOrderVC
+            self.navigationController?.pushViewController(cell, animated: true)
+            cell.setData(price: getSummaryPrice(),
+                         list: orderItems,
+                         success: {
+                            self.cleanOrderList(self)
+                }
+            )
+        }
     }
-    
 }

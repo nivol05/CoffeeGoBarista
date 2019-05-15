@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CashBoxVC" customModule="CoffeeGoBarista" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SecCell" id="9rk-vs-UPV">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SecCell" id="9rk-vs-UPV" customClass="OfflineCashBoxCell" customModule="CoffeeGoBarista" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="295" height="170"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -133,6 +133,12 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="lZy-Fl-oew"/>
             <size key="customSize" width="295" height="170"/>
+            <connections>
+                <outlet property="dateLbl" destination="nB7-tJ-54c" id="GDN-mI-vMB"/>
+                <outlet property="positionLbl" destination="gqA-Xd-uBu" id="hbg-ht-Vd9"/>
+                <outlet property="sumLbl" destination="hMa-jW-UFr" id="2Jt-we-Pbz"/>
+                <outlet property="timelbl" destination="K6J-MJ-aZw" id="qXZ-r5-D5w"/>
+            </connections>
             <point key="canvasLocation" x="264.80000000000001" y="86.35682158920541"/>
         </collectionViewCell>
     </objects>

@@ -77,7 +77,10 @@ class SignInVC: UIViewController, NVActivityIndicatorViewable {
                         self.view.makeToast("Аккаунт уже используется")
                         self.stopAnimating()
                     } else {
-                        current_coffee_spot = spot
+                        setSpotId(id: spot.id)
+                        setMaxOrderLimit(value: spot.max_order_limit)
+                        setOnlineEnabled(value: spot.coffee_go)
+                        setCashBoxEnabled(value: spot.cashbox)
                         self.downloadData()
                     }
                 }
@@ -217,9 +220,9 @@ class SignInVC: UIViewController, NVActivityIndicatorViewable {
                     self.view.makeToast("Данные введены неверно")
                     self.stopAnimating()
                 } else {
-                    let token = "Token \(jsonData["token"].string!)"
+                    setUserToken(login: jsonData["token"].string!)
                     header = [
-                        "Authorization": token
+                        "Authorization": getUserToken()
                     ]
                     self.check()
                 }

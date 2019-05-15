@@ -29,7 +29,9 @@ class SyrupAdapter: NSObject, UICollectionViewDelegate , UICollectionViewDataSou
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "menuItem", for: indexPath) as! MenuItemCell
         
         cell.itemNameLbl.text = searchList[indexPath.row].name
-        
+        cell.itemLbl.text = "Сироп"
+        cell.itemLbl.isHidden = false
+        cell.itemImage.image = nil
         //        cell.itemImage.kf.setImage()
         return cell
     }
